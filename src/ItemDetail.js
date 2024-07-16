@@ -77,7 +77,7 @@ export default function ItemDetail() {
         }
     } 
     loadItem()
-  }, [id])
+  }, [id, category])//netlify reko da dodam category
 
   const handleAddButton = (selectedSize) => {
     if(!selectedSize) {
