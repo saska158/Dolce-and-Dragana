@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react"
+import { useState, useContext } from "react"
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom"
 import { ClothesContext } from "./clothesContext"
 import { useAuth } from "./authContext"

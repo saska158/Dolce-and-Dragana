@@ -4,9 +4,6 @@ import { ClothesContext } from "./clothesContext"
 import { addFavoriteItem, removeFavoriteItem, getFavoriteItems } from "./api"
 import { useAuth } from "./authContext"
 
-import { onAuthStateChanged } from "firebase/auth"
-import { auth } from "./api"
-
 
 export default function ItemCard({
                           category, 

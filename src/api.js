@@ -7,13 +7,7 @@ import {
     getDocs, 
     getDoc,
     addDoc,
-    deleteDoc,
-    setDoc,
-    updateDoc,
-    arrayUnion,
-    arrayRemove,
-    query,
-    where
+    deleteDoc
 } from "firebase/firestore/lite"
 import { getAuth } from 'firebase/auth'
 

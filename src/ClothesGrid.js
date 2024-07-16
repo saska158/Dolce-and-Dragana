@@ -1,7 +1,6 @@
-import { useState, useEffect, useContext } from "react"
-import { Link, useLocation, useParams, useSearchParams } from "react-router-dom"
+import { useState, useEffect } from "react"
+import { Link, useParams, useSearchParams } from "react-router-dom"
 import { fetchData } from "./api"
-import { ClothesContext } from "./clothesContext"
 import ItemCard from "./ItemCard"
 
 
