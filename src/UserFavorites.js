@@ -49,7 +49,7 @@ export default function UserFavorites() {
             </button>
             <p>SIZE {selectedItem.size} ADDED TO YOUR SHOPPING BAG</p>
             <div>
-              <img src={selectedItem.images[0]} />
+              <img src={selectedItem.images[0]} alt="favorited-image" />
               <p>{selectedItem.name}</p>
             </div>
             <Link to='/shopping-bag'>SEE SHOPPING BAG</Link>

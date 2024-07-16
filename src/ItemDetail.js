@@ -152,6 +152,7 @@ export default function ItemDetail() {
               {data.images && data.images.map((image, index) => <img 
                                                          key={image} 
                                                          src={image} 
+                                                         alt="item"
                                                          className={`item-detail-img ${index === currentImage ? 'active' : ''}`}
                                                         />)
               }
@@ -208,7 +209,7 @@ export default function ItemDetail() {
               </button>
               <p>SIZE {selectedSize} ADDED TO YOUR SHOPPING BAG</p>
               <div>
-                <img src={selectedItem.images[0]} />
+                <img src={selectedItem.images[0]} alt="selected-image" />
                 <p>{selectedItem.name}</p>
               </div>
                 <Link to='/shopping-bag'>SEE SHOPPING BAG</Link>

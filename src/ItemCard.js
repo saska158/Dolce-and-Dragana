@@ -76,7 +76,7 @@ export default function ItemCard({
     <div className="item-container">  
       <Link to={`/${category}/${item.id}`} key={item.id} className='item-link'>
         <div className='item'>
-          <img className='item-img' src={item.images[0]} />
+          <img className='item-img' src={item.images[0]} alt="item-image" />
             {
               location.pathname !== '/shopping-bag' && location.pathname !== '/user-favorites' ? (
                 <>
