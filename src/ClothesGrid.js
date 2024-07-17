@@ -6,11 +6,13 @@ import ItemCard from "./ItemCard"
 
 export default function ClothesGrid() {
   const [data, setData] = useState([])
+  const [sortedItems, setSortedItems] = useState(data)
   const { category } = useParams()
 
   const [ searchParams, setSearchParams ] = useSearchParams()
   const [showColorDropdown, setShowColorDropdown] = useState(false)
   const [showSizeDropdown, setShowSizeDropdown] = useState(false)
+  const [showSortDropdown, setShowSortDropDown] = useState(false)
 
   const [display, setDisplay] = useState(5)
 
@@ -24,6 +26,7 @@ export default function ClothesGrid() {
  
   const colorFilter = searchParams.get('color')
   const sizeFilter = searchParams.get('size')
+  const sortOrder = searchParams.get('sortOrder')
 
     
   useEffect(() => {
@@ -42,6 +45,16 @@ export default function ClothesGrid() {
     loadData()
   }, [category])
 
+  useEffect(() => {
+    let sortedData = [...data]
+    if (sortOrder === 'asc') {
+      sortedData.sort((a, b) => a.price - b.price)
+    } else if (sortOrder === 'desc') {
+      sortedData.sort((a, b) => b.price - a.price)
+    }
+    setSortedItems(sortedData);
+  }, [sortOrder, data])
+
     
   function handleFilterChange(key, value) {
     setSearchParams(prevParams => {
@@ -54,6 +67,16 @@ export default function ClothesGrid() {
     })
   }
 
+  const handleSortChange = (order) => {
+    setSearchParams(prevParams => {
+      if (order === null) {
+        prevParams.delete('sortOrder')
+      } else {
+        prevParams.set('sortOrder', order)
+      }
+      return prevParams
+    })
+  }
 
   function clearAllFilters() {
     setSearchParams(new URLSearchParams());
@@ -62,11 +85,19 @@ export default function ClothesGrid() {
   function handleColorButton() {
     setShowColorDropdown(!showColorDropdown)
     setShowSizeDropdown(false)
+    setShowSortDropDown(false)
   }
 
   function handleSizeButton() {
     setShowSizeDropdown(!showSizeDropdown)
     setShowColorDropdown(false)
+    setShowSortDropDown(false)
+  }
+
+  function handleSortButton() {
+    setShowSortDropDown(!showSortDropdown)
+    setShowColorDropdown(false)
+    setShowSizeDropdown(false)
   }
 
   const colors = data.map(item => item.color)
@@ -75,14 +106,15 @@ export default function ClothesGrid() {
   const uniqueSizes = [...new Set(sizes)]
   
   //const displayedItems = sizeFilter ? data.filter(item => item.sizes.some(size => size === sizeFilter)) : data
-  const displayedItems = data.filter(item => {
+  const filteredItems = sortedItems.filter(item => {
     const matchesColor = colorFilter ? item.color === colorFilter : true
     const matchesSize = sizeFilter ? item.sizes.some(size => size === sizeFilter) : true
     return matchesColor && matchesSize
   })
 
-  const itemsElements = displayedItems.length > 0 ? 
-    (displayedItems.map(item => <ItemCard 
+
+  const itemsElements = filteredItems.length > 0 ? 
+    (filteredItems.map(item => <ItemCard 
                                    category={category} 
                                    item={item}
                                    key={item.id}
@@ -128,6 +160,11 @@ export default function ClothesGrid() {
             >
               SIZE
             </button>
+            <button
+              onClick={handleSortButton}
+            >
+              SORT
+            </button>
             {
               showColorDropdown && (
                 <div className="filter-table-options">
@@ -159,6 +196,15 @@ export default function ClothesGrid() {
                       </button>
                     ))
                   }
+                </div>
+              )
+            }
+            {
+              showSortDropdown && (
+                <div className="filter-table-options">
+                  <button onClick={() => handleSortChange('asc')}>lowest to highest price</button>
+                  <button onClick={() => handleSortChange('desc')}>highest to lowest price</button>
+                  <button onClick={() => handleSortChange(null)}>clear sorting</button>
                 </div>
               )
             }
