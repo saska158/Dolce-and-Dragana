@@ -7,9 +7,11 @@ import ItemCard from "./ItemCard"
 export default function ClothesGrid() {
   const [data, setData] = useState([])
   const { category } = useParams()
+
   const [ searchParams, setSearchParams ] = useSearchParams()
   const [showColorDropdown, setShowColorDropdown] = useState(false)
   const [showSizeDropdown, setShowSizeDropdown] = useState(false)
+
   const [display, setDisplay] = useState(5)
 
   const [selectedItem, setSelectedItem] = useState(null)
@@ -22,17 +24,16 @@ export default function ClothesGrid() {
  
   const colorFilter = searchParams.get('color')
   const sizeFilter = searchParams.get('size')
+
     
   useEffect(() => {
     const loadData = async () => {
       setLoading(true)
       try {
         const data = await fetchData(category)
-        //console.log(data)
         setLoading(true)
         setData(data)
       } catch(error) {
-          //console.error(error)
           setError(error)
         } finally {
            setLoading(false)
@@ -53,6 +54,11 @@ export default function ClothesGrid() {
     })
   }
 
+
+  function clearAllFilters() {
+    setSearchParams(new URLSearchParams());
+  }
+
   function handleColorButton() {
     setShowColorDropdown(!showColorDropdown)
     setShowSizeDropdown(false)
@@ -67,18 +73,24 @@ export default function ClothesGrid() {
   const uniqueColors = [...new Set(colors)]
   const sizes = data.flatMap(item => item.sizes)
   const uniqueSizes = [...new Set(sizes)]
+  
+  //const displayedItems = sizeFilter ? data.filter(item => item.sizes.some(size => size === sizeFilter)) : data
+  const displayedItems = data.filter(item => {
+    const matchesColor = colorFilter ? item.color === colorFilter : true
+    const matchesSize = sizeFilter ? item.sizes.some(size => size === sizeFilter) : true
+    return matchesColor && matchesSize
+  })
 
-  const displayedItems = colorFilter ? data.filter(item => item.color === colorFilter) : data
-  const itemsElements = displayedItems.map(item => <ItemCard 
-                                                      category={category} 
-                                                      item={item}
-                                                      setShowSelectedItem={setShowSelectedItem}
-                                                      setSelectedItem={setSelectedItem}
-                                                      setIsItemFavourited={setIsItemFavourited}
-                                                      setShowFavouritedBox={setShowFavouritedBox}
-                                                      //setFavouritedItem={setFavouritedItem}
-                                                      //setShowFavouritedItem={setShowFavouritedItem}
-                                                   />)  
+  const itemsElements = displayedItems.length > 0 ? 
+    (displayedItems.map(item => <ItemCard 
+                                   category={category} 
+                                   item={item}
+                                   key={item.id}
+                                   setShowSelectedItem={setShowSelectedItem}
+                                   setSelectedItem={setSelectedItem}
+                                   setIsItemFavourited={setIsItemFavourited}
+                                   setShowFavouritedBox={setShowFavouritedBox}
+                                 />)) : null  
 
   if(loading) {
     return (
@@ -102,7 +114,7 @@ export default function ClothesGrid() {
           <div className="filter-buttons">
             <button
               className={colorFilter === '' ? 'selected' : ''}
-              onClick={() => handleFilterChange('color', null)}
+              onClick={() => clearAllFilters()}
             >
               VIEW ALL
             </button>
@@ -170,7 +182,9 @@ export default function ClothesGrid() {
         <div 
           className={display === 5 ? "clothes-grid" : "clothes-grid-two-items"}
         >
-          {itemsElements}
+          {
+            itemsElements ? itemsElements : <p>No item matches your requirements.</p>
+          }
         </div>
 
         {
@@ -212,15 +226,3 @@ export default function ClothesGrid() {
     )
 }
 
-/*
-(
-          <div className="favourited-item-show">
-            <p>Saved</p>
-            <Link to='/user-wishlist'>SEE LIST</Link>
-          </div>
-        ) : (
-          <div className="favourited-item-show">
-            <p>The item has been removed from favourites.</p>
-          </div>
-        )
-*/
