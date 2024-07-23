@@ -2,25 +2,31 @@ import { useState, useEffect } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { auth } from "./api"
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth"
+import { useAuth } from "./authContext"
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
+  const [loggedUser, setLoggedUser] = useState(null)
+  const { user } = useAuth()
+  //loggedUser se ne koristi, kao ni user, samo setLoggedUser kojim updatujemo da je user tu,
+  //ali authContext nam vec omogucava da koristimo setUser, mozda treba to da uzmemo i samo 
+  //da u f-ji handleSignIn nakon sto pozovemo signInWithEmailAndPassword, pomocu setUser apdejtujemo user-a u context-u
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const location = useLocation()
   const navigate = useNavigate()
 
-  useEffect(() => {
-    //const auth = getAuth()
+  /*useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user)
       setLoading(false)
     })
 
     return () => unsubscribe()
-  }, [])
+  }, [])*/ //da li ovo ili:
+
+
 
   const handleSignIn = async (e) => {
     e.preventDefault()
@@ -28,7 +34,7 @@ export default function Login() {
     setError(null)
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      setUser(userCredential.user);
+      setLoggedUser(userCredential.user);
       console.log(userCredential, userCredential.user)
       setEmail('')
       setPassword('')
@@ -40,7 +46,9 @@ export default function Login() {
         customMessage = `WARNING: The user name and password provided do not correspond to any account at D&D.`
       }  else if (error.code === 'auth/invalid-email') {
         customMessage = `WARNING: Enter a valid e-mail address.`
-      } else {
+      } else if (error.code === 'auth/missing-password') {
+        customMessage = `WARNING: Enter a password.`
+      }  else {
         customMessage = `Error signing up: ${error.message}`;
       }
       console.error('Error signing up:', error)
@@ -49,18 +57,6 @@ export default function Login() {
       setLoading(false)
     }
   }
-
-  /*const handleSignOut = async (e) => {
-    e.preventDefault()
-    try {
-      await signOut(auth);
-      setUser(null);
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  }*/
-
-  console.log(user)
 
   if(loading) {
     return (

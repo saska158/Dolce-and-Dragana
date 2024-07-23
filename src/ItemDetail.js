@@ -1,12 +1,12 @@
 import { useState, useEffect, useContext, useRef } from "react"
 import { Link, useParams } from "react-router-dom"
 import { getItem } from "./api"
-import { ClothesContext } from "./clothesContext"
+import { ShoppingBagContext } from "./shoppingBagContext"
 import useScreenWidth from "./useScreenWidth"
 
 export default function ItemDetail() {
-  const { addToShoppingBag } = useContext(ClothesContext)
-  const [data, setData] = useState({})
+  const { addToShoppingBag } = useContext(ShoppingBagContext)
+  const [item, setItem] = useState({})
   const [selectedSize, setSelectedSize] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -25,6 +25,23 @@ export default function ItemDetail() {
   const { isSmallScreen } = useScreenWidth()
 
   useEffect(() => {
+    const loadItem = async () => {
+      setLoading(true)
+      try {
+        const itemData = await getItem(category, id)
+        setLoading(true)
+        setItem(itemData)
+      } catch(error) {
+          console.error(error)
+          setError(error)
+      } finally {
+          setLoading(false)
+      }
+    } 
+    loadItem()
+  }, [id, category])//netlify reko da dodam category
+
+  useEffect(() => {
     if (isDragging) {
       document.body.classList.add('no-scroll')
     } else {
@@ -33,7 +50,7 @@ export default function ItemDetail() {
 
     return () => {
       document.body.classList.remove('no-scroll')
-    };
+    }
   }, [isDragging])
 
 
@@ -61,31 +78,14 @@ export default function ItemDetail() {
     setIsDragging(false)
   }
 
-    
-  useEffect(() => {
-    const loadItem = async () => {
-      setLoading(true)
-      try {
-        const data = await getItem(category, id)
-        setLoading(true)
-        setData(data)
-      } catch(error) {
-          console.error(error)
-          setError(error)
-      } finally {
-          setLoading(false)
-        }
-    } 
-    loadItem()
-  }, [id, category])//netlify reko da dodam category
 
   const handleAddButton = (selectedSize) => {
     if(!selectedSize) {
       console.log("WARNING YOU MUST SELECT A SIZE")
       setWarning(true)
     } else {
-        addToShoppingBag(data, selectedSize, category)
-        setSelectedItem({...data, selectedSize}) 
+        addToShoppingBag(item, selectedSize, category)
+        setSelectedItem({...item, selectedSize}) 
         toggleSelectedItem()
       }
   }
@@ -96,11 +96,11 @@ export default function ItemDetail() {
   }
 
   const handleNext = () => {
-    setCurrentImage((prevImage) => (prevImage + 1) % data.images.length);
+    setCurrentImage((prevImage) => (prevImage + 1) % item.images.length);
   }
 
   const handlePrev = () => {
-    setCurrentImage((prevImage) => (prevImage - 1 + data.images.length) % data.images.length);
+    setCurrentImage((prevImage) => (prevImage - 1 + item.images.length) % item.images.length);
   }
 
   if(loading) {
@@ -134,7 +134,7 @@ export default function ItemDetail() {
     
 
   return (
-    data ? (
+    item ? (
       <div className="content-container">
         <div className="item-detail">
           <div className="item-detail-info item-detail-info-two">
@@ -149,7 +149,7 @@ export default function ItemDetail() {
             </div>
           </div>
           <div className="item-detail-images">
-              {data.images && data.images.map((image, index) => <img 
+              {item.images && item.images.map((image, index) => <img 
                                                          key={image} 
                                                          src={image} 
                                                          alt="item"
@@ -172,16 +172,16 @@ export default function ItemDetail() {
             onTouchEnd={isSmallScreen ? handleTouchEnd : null}
           >
             <div className="item-detail-basic">
-              <h4>{data.name}</h4>
-              <p>{data?.price?.toLocaleString()} RSD</p>
-              <p>*{data.color}</p>
+              <h4>{item.name}</h4>
+              <p>{item?.price?.toLocaleString()} RSD</p>
+              <p>*{item.color}</p>
             </div>
             <div className="item-detail-description">
               Dress made of 100% linen. Round neckline and thin adjustable straps. 
               Front slit at the hem. Lining. Invisible side zip fastening.
             </div>
             <div className="item-detail-sizes">
-              {data?.sizes?.map(size => <div 
+              {item?.sizes?.map(size => <div 
                                           key={size} 
                                           onClick={() => setSelectedSize(size)}
                                           className={selectedSize === size ? 'black-btn' : ''}>{size}</div>)

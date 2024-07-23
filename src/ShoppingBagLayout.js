@@ -1,9 +1,9 @@
 import { useContext } from "react"
 import { NavLink, Outlet } from "react-router-dom"
-import { ClothesContext } from "./clothesContext"
+import { ShoppingBagContext } from "./shoppingBagContext"
 
 export default function ShoppingBagLayout() {
-  const { shoppingBagItems } = useContext(ClothesContext)
+  const { shoppingBagItems } = useContext(ShoppingBagContext)
 
   const navLinkActiveStyle = {
     fontWeight: '700',

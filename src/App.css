@@ -66,6 +66,14 @@ input {
   overflow: hidden;
 }
 
+.white {
+  color: #fff;
+}
+
+.black {
+  color: #000;
+}
+
 /*__________HOMEPAGE__________*/
 
 .slideshow-container {
@@ -212,7 +220,6 @@ header {
 .menu-button {
   width: 35px;
   margin-right: 2em;
-  color: #fff;
 }
 
 .menu-button:hover {
@@ -276,7 +283,6 @@ header {
   gap: 1em;
   font-weight: 300;
   font-size: .6rem;
-  color: #fff;
 }
 
 .header-links button {

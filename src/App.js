@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
 import Layout from './Layout'
 import Homepage from './Homepage'
-import ClothesGrid from './ClothesGrid'
+import Items from './Items'
 import ItemDetail from './ItemDetail'
 import ShoppingBagLayout from './ShoppingBagLayout'
 import ShoppingBag from './ShoppingBag'
@@ -13,7 +13,7 @@ import UserProfile from './UserProfile'
 import UserFavorites from './UserFavorites'
 import EmailVerification from './EmailVerification'
 import AuthRequired from './AuthRequired'
-import { ClothesContextProvider } from './clothesContext'
+import { ShoppingBagContextProvider } from './shoppingBagContext'
 import { AuthProvider } from './authContext'
 
 function App() {
@@ -21,12 +21,12 @@ function App() {
 
   return (
     <AuthProvider>
-      <ClothesContextProvider>
+      <ShoppingBagContextProvider>
        <BrowserRouter>
         <Routes>
          <Route path='/' element={<Layout />}>
            <Route index element={<Homepage />} />
-           <Route path=':category' element={<ClothesGrid />} />
+           <Route path=':category' element={<Items />} />
            <Route path=':category/:id' element={<ItemDetail />}/>
            <Route path='shopping-bag' element={<ShoppingBagLayout />}>
             <Route index element={<ShoppingBag />} />
@@ -44,7 +44,7 @@ function App() {
          </Route>
         </Routes>
        </BrowserRouter>
-      </ClothesContextProvider>
+      </ShoppingBagContextProvider>
     </AuthProvider>
   )  
 }

@@ -1,13 +1,13 @@
 import { useState, useContext } from "react"
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom"
-import { ClothesContext } from "./clothesContext"
+import { ShoppingBagContext } from "./shoppingBagContext"
 import { useAuth } from "./authContext"
 
 export default function Layout() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [menuCategory, setMenuCategory] = useState('women')
   const location = useLocation()
-  const { shoppingBagItems } = useContext(ClothesContext)
+  const { shoppingBagItems } = useContext(ShoppingBagContext)
   const { user, logOut } = useAuth()
 
   function toggleMenu() {
@@ -28,7 +28,7 @@ export default function Layout() {
     return (
       <div className="container">
         <header>
-           <button onClick={toggleMenu} className="menu-button">
+           <button onClick={toggleMenu} className={`menu-button ${location.pathname === '/' ? 'white' : 'black'}`}>
             {
               !menuOpen ? (
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="menu-toggle">
@@ -99,7 +99,7 @@ export default function Layout() {
                 }
              </div>
            </div>
-           <div className='header-links'>
+           <div className={`header-links ${location.pathname === '/' ? 'white' : 'black'}`}>
             { 
               user && user.emailVerified ? 
                 <Link to="/user">{user.displayName}</Link> : 

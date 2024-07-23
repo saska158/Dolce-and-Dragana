@@ -13,24 +13,25 @@ export default function UserFavorites() {
     const [showSelectedItem, setShowSelectedItem] = useState(false)
 
     useEffect(() => {
-        const fetchFavorites = async () => {
-            if(user) {
-                const favoriteItems = await getFavoriteItems(user.uid)
-                setFavorites(favoriteItems)
-            }
-        }
-        fetchFavorites() //ne zaboravi da kolingujes
-    }, [user, favorites])
+      // Set up the real-time listener
+      const unsubscribe = getFavoriteItems(user.uid, setFavorites);
+
+      // Cleanup the listener on component unmount
+      return () => unsubscribe && unsubscribe();
+    }, [user.uid])
+
+    console.log('from favorites', favorites)
 
     return (
         <div style={{marginLeft: '1em'}}>
             <p style={{fontWeight: '700'}}>{user.displayName}'s...</p><br />
             {
-                favorites.length > 0 ? (
+                favorites?.length > 0 ? (
                     <div className="clothes-grid">
               {favorites.map(fav => <ItemCard 
-                                      key={fav.id} 
-                                      item={fav.item} 
+                                      key={fav.name} 
+                                      item={fav} 
+                                      category={fav.category}
                                       setIsItemFavourited={setIsItemFavourited}
                                       setShowFavouritedBox={setShowFavouritedBox}
                                       setShowSelectedItem={setShowSelectedItem}

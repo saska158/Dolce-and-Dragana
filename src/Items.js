@@ -4,7 +4,7 @@ import { fetchData } from "./api"
 import ItemCard from "./ItemCard"
 
 
-export default function ClothesGrid() {
+export default function Items() {
   const [data, setData] = useState([])
   const [sortedItems, setSortedItems] = useState(data)
   const { category } = useParams()
@@ -27,7 +27,8 @@ export default function ClothesGrid() {
   const colorFilter = searchParams.get('color')
   const sizeFilter = searchParams.get('size')
   const sortOrder = searchParams.get('sortOrder')
-
+ 
+  //console.log('clothes grid data', data)
     
   useEffect(() => {
     const loadData = async () => {
@@ -38,9 +39,9 @@ export default function ClothesGrid() {
         setData(data)
       } catch(error) {
           setError(error)
-        } finally {
+      } finally {
            setLoading(false)
-          }
+      }
     }
     loadData()
   }, [category])
@@ -79,7 +80,10 @@ export default function ClothesGrid() {
   }
 
   function clearAllFilters() {
-    setSearchParams(new URLSearchParams());
+    setSearchParams(new URLSearchParams())
+    setShowColorDropdown(false)
+    setShowSizeDropdown(false)
+    setShowSortDropDown(false)
   }
 
   function handleColorButton() {

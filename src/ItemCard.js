@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { ClothesContext } from "./clothesContext"
+import { ShoppingBagContext } from "./shoppingBagContext"
 import { addFavoriteItem, removeFavoriteItem, getFavoriteItems } from "./api"
 import { useAuth } from "./authContext"
 
@@ -10,52 +10,49 @@ export default function ItemCard({
                           item, 
                           setShowSelectedItem, 
                           setSelectedItem, 
-                          //setFavouritedItem, 
-                          //setShowFavouritedItem
                           setIsItemFavourited,
-                          setShowFavouritedBox
+                          setShowFavouritedBox,
                         }) {
   const { user } = useAuth()
-  const { addToShoppingBag, removeFromShoppingBag } = useContext(ClothesContext)
+  const { addToShoppingBag, removeFromShoppingBag } = useContext(ShoppingBagContext)
   const [showSizeTable, setShowSizeTable] = useState(null)
   const [favorites, setFavorites] = useState([])
-  //const [user, setUser] = useState(null)
   const location = useLocation()
   const navigate = useNavigate()
-  
 
   useEffect(() => {
-    const fetchFavorites = async () => {
-      if(user) {
-        const favoriteItems = await getFavoriteItems(user.uid)
-        setFavorites(favoriteItems)
-      }
-    }
-    fetchFavorites() //ne zaboravi da kolingujes
-  }, [user, favorites])//ovo favorites pravi problem, beskrajno se renderuje ne znam sto
+    // Set up the real-time listener
+    const unsubscribe = getFavoriteItems(user.uid, setFavorites);
+    // Cleanup the listener on component unmount
+    return () => unsubscribe && unsubscribe();
+  }, [user.uid])
 
+  console.log(favorites, 'favoriiitees')
   const isFavourite = (item) => {
-    return favorites.some((favItem) => favItem.item.id === item.id)
-  }
+    console.log('kjfebvkejbvr')
+    if(favorites?.length > 0) {
+      return favorites.some((favItem) => favItem.name === item.name)
+    }
+  } 
+  
 
   function toggleSizeTable(itemId) {
     setShowSizeTable(prevItemId => (prevItemId === itemId ? null : itemId))
   } 
 
-  const handleFavouriteClick = (userId=null, item, itemId) => {
+  const handleFavouriteClick = async (userId=null, item, itemId) => {
     const stateData = {message : "YOU MUST LOG IN TO VIEW AND SAVE ITEMS TO YOUR FAVOURITES LISTS."}
     if(!userId) {
       navigate('/log-in', {state: stateData})
     } else {
         console.log('favorited item')
         if (isFavourite(item)) {
-          const favoriteId = favorites.filter(favItem => favItem.item.id === itemId)[0].id
-          console.log(favoriteId, 'favoritedId')
-          removeFavoriteItem(userId, favoriteId)
           setIsItemFavourited(false)
+          const favoriteId = favorites.filter(favItem => favItem.name === itemId)[0].uniqueId
+          await removeFavoriteItem(userId, favoriteId)
         } else {
-          addFavoriteItem(userId, item)
           setIsItemFavourited(true)
+          await addFavoriteItem(userId, item, category)
         }
       }
   }
@@ -70,7 +67,7 @@ export default function ItemCard({
     setTimeout(() => {setShowFavouritedBox(false)}, 1000)
   }
 
-  console.log('this is item category:', category)
+  console.log('this is item category:', category, item)
 
   return ( 
     <div className="item-container">  
@@ -112,7 +109,7 @@ export default function ItemCard({
         <button 
           className="add-to-favorites-btn"
           onClick={() => {
-            handleFavouriteClick(user && user.uid ? user.uid : null, item, item.id)
+            handleFavouriteClick(user.uid, item, item.name)
             //setFavouritedItem(item)
             toggleFavouritedBox()
             //addFavoriteItem(user.uid, item)
@@ -173,4 +170,3 @@ export default function ItemCard({
     </div>
   )
 }
-

@@ -7,9 +7,11 @@ import {
     getDocs, 
     getDoc,
     addDoc,
-    deleteDoc
-} from "firebase/firestore/lite"
+    deleteDoc,
+    onSnapshot
+} from "firebase/firestore"
 import { getAuth } from 'firebase/auth'
+//import { v4 as uuidv4 } from 'uuid'
 
 const firebaseConfig = {
   apiKey: "AIzaSyDfeJ_a5u8G6LVrjw0vAxdVQEOpTRqQ9bE",
@@ -41,10 +43,14 @@ export const fetchData = async (route) => {
   if (!category) {
     throw new Error(`No collection mapped for route: ${route}`)
   }
-  const colRef = collection(db, category)
-  const snapshot = await getDocs(colRef)
-  const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-  return data
+  try {
+    const colRef = collection(db, category)
+    const snapshot = await getDocs(colRef)
+    const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    return data
+  } catch(error) {
+    console.error("Error fetching items:", error)
+  }
 }
 
 
@@ -53,41 +59,64 @@ export async function getItem(route, id) {
   if (!category) {
     throw new Error(`No collection mapped for route: ${route}`)
   }
-  const docRef = doc(db, category, id)
-  const snapshot = await getDoc(docRef)
-  return {
+  try {
+    const docRef = doc(db, category, id)
+    const snapshot = await getDoc(docRef)
+    return {
       ...snapshot.data(),
       id: snapshot.id
+    }
+  } catch(error) {
+    console.error("Error fetching item:", error)
   }
 }
 
-
-// Function to add favorite item
-export const addFavoriteItem = async (userId, item) => {
+export const addFavoriteItem = async (userId, item, category) => {
   try {
-    const favoritesRef = collection(db, 'users', userId, 'favorites');
-    await addDoc(favoritesRef, { item });
+    console.log('aaaddeeeeddd')
+    const favoritesRef = collection(db, 'users', userId, 'favorites')
+    await addDoc(favoritesRef, {...item, category} /*{...item, uniqueId: uuidv4(), category}*/)
   } catch (error) {
-    console.error("Error adding favorite item: ", error);
+    console.error("Error adding favorite item: ", error)
   }
 }
 
-// Function to remove favorite item
+
 export const removeFavoriteItem = async (userId, favoriteId) => {
   try {
-    const favoriteRef = doc(db, 'users', userId, 'favorites', favoriteId);
-    await deleteDoc(favoriteRef);
+    console.log('removed', favoriteId)
+    const favoriteRef = doc(db, 'users', userId, 'favorites', favoriteId)
+    await deleteDoc(favoriteRef)
   } catch (error) {
-    console.error("Error removing favorite item: ", error);
+    console.error("Error removing favorite item: ", error)
   }
-};
-
-// Function to get favorite items
+}
+/*
 export const getFavoriteItems = async (userId) => {
-  const favoritesRef = collection(db, 'users', userId, 'favorites');
-  const querySnapshot = await getDocs(favoritesRef);
-  return querySnapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data()
-  }));
-};
+  try {
+    const favoritesCollectionRef = collection(db, 'users', userId, 'favorites')
+    const favoriteSnapshot = await getDocs(favoritesCollectionRef)
+    const favoriteItems = favoriteSnapshot.docs.map(doc => ({
+      uniqueId: doc.id,
+      ...doc.data()
+    }))
+    return favoriteItems
+  } catch(error) {
+    console.error("Error fetching favorite items: ", error)
+  }
+}*/
+
+export const getFavoriteItems = (userId, callback) => {
+  try {
+    const favoritesCollectionRef = collection(db, 'users', userId, 'favorites')
+    const unsubscribe = onSnapshot(favoritesCollectionRef, (snapshot) => {
+      const favoriteItems = snapshot.docs.map(doc => ({uniqueId: doc.id, ...doc.data()}))
+      callback(favoriteItems)
+    }, (error) => {
+      console.error("Error listening to updates: ", error)
+    })
+    return unsubscribe
+  } catch (error) {
+    console.error("Error fetching favorite items: ", error)
+  }
+}

@@ -1,10 +1,10 @@
 import { useState, useContext } from "react"
 import { Link } from "react-router-dom"
-import { ClothesContext } from "./clothesContext"
+import { ShoppingBagContext } from "./shoppingBagContext"
 import ItemCard from "./ItemCard"
 
 export default function ShoppingBag() {
-  const { shoppingBagItems } = useContext(ClothesContext)
+  const { shoppingBagItems } = useContext(ShoppingBagContext)
   const [isItemFavourited, setIsItemFavourited] = useState(false)
   const [showFavouritedBox, setShowFavouritedBox] = useState(false)
   

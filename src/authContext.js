@@ -8,16 +8,17 @@ export const useAuth = () => useContext(AuthContext)
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
+    //console.log('evo ga user', user)
 
     useEffect(() => {
-        const auth = getAuth()
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-          setUser(user)
-          setLoading(false)
-        })
+      const auth = getAuth()
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        setUser(user)
+        setLoading(false)
+      })
     
-        return () => unsubscribe()
-      }, [])
+      return () => unsubscribe()
+    }, [])
 
     const logOut = async () => {
       const auth = getAuth()

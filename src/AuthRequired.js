@@ -5,7 +5,7 @@ export default function AuthRequired() {
     const { user } = useAuth()
     //const isSignedIn = localStorage.getItem("loggedin")
     const location = useLocation()
-    console.log(location)
+   // console.log(location)
 
     if(!user) {
         return <Navigate 

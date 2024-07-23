@@ -5,7 +5,6 @@ import { getAuth, reload } from "firebase/auth"
 
 export default function EmailVerification() {
     const {user, setUser} = useAuth()
-    //const emailVerified = user.emailVerified
     const [isEmailVerified, setIsEmailVerified] = useState(user?.emailVerified)
     const [verificationMessage, setVerificationMessage] = useState('')
     console.log(user, 'from emailVerification')

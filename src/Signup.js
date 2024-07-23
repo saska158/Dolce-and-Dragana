@@ -4,17 +4,40 @@ import { auth } from "./api"
 import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth"
 
 export default function Signup() {
-  const [email, setEmail] = useState('')
+  /*const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
-  const [surname, setSurname] = useState('')
+  const [surname, setSurname] = useState('')*/
+  const initialState = {
+    email: '',
+    password: '',
+    name: '',
+    surname: '',
+    terms: false
+  }
+  const [formData, setFormData] = useState(initialState)
   const [user, setUser] = useState(null)
+  //proveri zasto uopste ovde imas user state, izgleda da ne treba
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [alert, setAlert] = useState('')
   const navigate = useNavigate()
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: type === 'checkbox' ? checked : value 
+    }))
+  }
 
   const handleSignUp = async (e) => {
     e.preventDefault()
+    const { email, password, name, surname, terms } = formData
+    if (!name || !surname || !email || !password || !terms) {
+      setAlert("Please fill in all fields and agree to the terms and conditions.")
+      return
+    }
     setLoading(true)
     setError(null)
     try {
@@ -27,15 +50,16 @@ export default function Signup() {
       await sendEmailVerification(user)
       console.log('User signed up successfully:', user)
       setUser(user)
-      setEmail('')
-      setPassword('')
-      setName('')
-      setSurname('')
+      setFormData(initialState)
       navigate('/email-verification', {replace:true})
     } catch(error) {
       let customMessage
       if(error.code === 'auth/email-already-in-use') {
         customMessage = `WARNING: The email address entered is already being used. Please select another.`
+      } else if (error.code === 'auth/invalid-email') {
+        customMessage = `WARNING: Enter a valid e-mail address.`
+      } else if (error.code === 'auth/missing-password') {
+        customMessage = `WARNING: Enter a password.`
       } else {
         customMessage = `Error signing up: ${error.message}`;
       }
@@ -45,7 +69,6 @@ export default function Signup() {
       setLoading(false)
     }
   }
-  console.log(user, 'user')
 
   if(loading) {
     return (
@@ -68,7 +91,14 @@ export default function Signup() {
 
   return (
     <div className="content-container">
-      <div className="form-container">
+      {
+        alert ? (
+          <div className="pop-up-box">
+            <p>{alert}</p>
+            <button onClick={() => setAlert("")}>CLOSE</button>
+          </div>
+        ) : (
+          <div className="form-container">
         {
           <div>
             <h4>PERSONAL DETAILS</h4>
@@ -76,35 +106,42 @@ export default function Signup() {
               <input
                 type="email"
                 placeholder="E-MAIL" 
-                value={email}
-                onChange={e => setEmail(e.target.value)}
+                value={formData.email}
+                name="email"
+                onChange={handleChange}
                 required
               />
               <input 
                 type="password"
                 placeholder="PASSWORD"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
+                value={formData.password}
+                name="password"
+                onChange={handleChange}
                 required
               />
               <input 
                 type="text"
                 placeholder="NAME"
-                value={name}
-                onChange={e => setName(e.target.value)}
+                value={formData.name}
+                name="name"
+                onChange={handleChange}
                 required
               />
               <input 
                 type="text"
                 placeholder="SURNAME"
-                value={surname}
-                onChange={e => setSurname(e.target.value)}
+                value={formData.surname}
+                name="surname"
+                onChange={handleChange}
                 required
               />
               <label htmlFor="checkbox2">
                 <input 
                   type="checkbox"
                   id="checkbox2"
+                  checked={formData.terms}
+                  name="terms"
+                  onChange={handleChange}
                   required
                 />
                   I have read and understand the Privacy and Cookies Policy
@@ -114,6 +151,8 @@ export default function Signup() {
           </div>
         }
       </div>
+        )
+      }
     </div>
   )
 }
