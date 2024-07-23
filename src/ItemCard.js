@@ -21,11 +21,13 @@ export default function ItemCard({
   const navigate = useNavigate()
 
   useEffect(() => {
-    // Set up the real-time listener
+    if(user) {
+      // Set up the real-time listener
     const unsubscribe = getFavoriteItems(user.uid, setFavorites);
     // Cleanup the listener on component unmount
     return () => unsubscribe && unsubscribe();
-  }, [user.uid])
+    }
+  }, [user])
 
   console.log(favorites, 'favoriiitees')
   const isFavourite = (item) => {
@@ -109,7 +111,7 @@ export default function ItemCard({
         <button 
           className="add-to-favorites-btn"
           onClick={() => {
-            handleFavouriteClick(user.uid, item, item.name)
+            handleFavouriteClick(user && user.uid, item, item.name)
             //setFavouritedItem(item)
             toggleFavouritedBox()
             //addFavoriteItem(user.uid, item)
