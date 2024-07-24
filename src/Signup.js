@@ -4,10 +4,6 @@ import { auth } from "./api"
 import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth"
 
 export default function Signup() {
-  /*const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
-  const [surname, setSurname] = useState('')*/
   const initialState = {
     email: '',
     password: '',
@@ -16,11 +12,10 @@ export default function Signup() {
     terms: false
   }
   const [formData, setFormData] = useState(initialState)
-  const [user, setUser] = useState(null)
-  //proveri zasto uopste ovde imas user state, izgleda da ne treba
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [alert, setAlert] = useState('')
+
   const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -49,7 +44,6 @@ export default function Signup() {
       })
       await sendEmailVerification(user)
       console.log('User signed up successfully:', user)
-      setUser(user)
       setFormData(initialState)
       navigate('/email-verification', {replace:true})
     } catch(error) {

@@ -8,7 +8,6 @@ export const useAuth = () => useContext(AuthContext)
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
-    //console.log('evo ga user', user)
 
     useEffect(() => {
       const auth = getAuth()
@@ -25,6 +24,8 @@ export const AuthProvider = ({children}) => {
       await signOut(auth)
       setUser(null)
     }  
+
+    console.log("evo ga user", user)
 
     return (
         <AuthContext.Provider value={{user, logOut, setUser}}>

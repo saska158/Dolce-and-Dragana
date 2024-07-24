@@ -1,17 +1,15 @@
 import { initializeApp } from "firebase/app"
-
 import { 
-    getFirestore, 
-    collection, 
-    doc, 
-    getDocs, 
-    getDoc,
-    addDoc,
-    deleteDoc,
-    onSnapshot
+  getFirestore, 
+  collection, 
+  doc, 
+  getDocs, 
+  getDoc,
+  addDoc,
+  deleteDoc,
+  onSnapshot
 } from "firebase/firestore"
 import { getAuth } from 'firebase/auth'
-//import { v4 as uuidv4 } from 'uuid'
 
 const firebaseConfig = {
   apiKey: "AIzaSyDfeJ_a5u8G6LVrjw0vAxdVQEOpTRqQ9bE",
@@ -29,14 +27,13 @@ export { auth }
 
 
 const routeToCollectionMap = {
-    '/women-jackets': 'women-jackets',
-    '/women-blouses': 'women-blouses',
-    '/women-sweaters': 'women-sweaters',
-    '/women-coats': 'women-coats',
-    '/men-jackets': 'men-jackets',
-    '/men-shirts': 'men-shirts'
-    // add more routes and corresponding collections as needed
-  }
+  '/women-jackets': 'women-jackets',
+  '/women-blouses': 'women-blouses',
+  '/women-sweaters': 'women-sweaters',
+  '/women-coats': 'women-coats',
+  '/men-jackets': 'men-jackets',
+  '/men-shirts': 'men-shirts'
+}
   
 export const fetchData = async (route) => {
   const category = routeToCollectionMap[`/${route}`]
@@ -75,7 +72,7 @@ export const addFavoriteItem = async (userId, item, category) => {
   try {
     console.log('aaaddeeeeddd')
     const favoritesRef = collection(db, 'users', userId, 'favorites')
-    await addDoc(favoritesRef, {...item, category} /*{...item, uniqueId: uuidv4(), category}*/)
+    await addDoc(favoritesRef, {...item, category})
   } catch (error) {
     console.error("Error adding favorite item: ", error)
   }
@@ -91,20 +88,6 @@ export const removeFavoriteItem = async (userId, favoriteId) => {
     console.error("Error removing favorite item: ", error)
   }
 }
-/*
-export const getFavoriteItems = async (userId) => {
-  try {
-    const favoritesCollectionRef = collection(db, 'users', userId, 'favorites')
-    const favoriteSnapshot = await getDocs(favoritesCollectionRef)
-    const favoriteItems = favoriteSnapshot.docs.map(doc => ({
-      uniqueId: doc.id,
-      ...doc.data()
-    }))
-    return favoriteItems
-  } catch(error) {
-    console.error("Error fetching favorite items: ", error)
-  }
-}*/
 
 export const getFavoriteItems = (userId, callback) => {
   try {
