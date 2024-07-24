@@ -10,6 +10,12 @@ const Layout = () => {
   const { shoppingBagItems } = useContext(ShoppingBagContext)
   const { user, logOut } = useAuth()
 
+  let shoppingBagItemsNumber = 0
+  
+  shoppingBagItems.forEach(item => shoppingBagItemsNumber += item.amount)
+
+  console.log('shopping bag items', shoppingBagItems)
+
   const toggleMenu = () => {
     setMenuOpen(prev => !prev) 
   }
@@ -109,7 +115,7 @@ const Layout = () => {
             { 
               location.pathname !== '/shopping-bag' && 
               <Link className="shopping-bag-link" to="/shopping-bag">
-                { `shopping bag (${shoppingBagItems.length})` }
+                { `shopping bag (${shoppingBagItemsNumber})` }
               </Link> 
             }
             { 

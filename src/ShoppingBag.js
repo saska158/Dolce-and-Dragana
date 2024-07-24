@@ -9,7 +9,7 @@ const ShoppingBag = () => {
   const [showFavouritedBox, setShowFavouritedBox] = useState(false)
   
   let totalAmount = 0
-  shoppingBagItems.forEach(item => totalAmount += item.price)
+  shoppingBagItems.forEach(item => totalAmount += item.price * item.amount)
     
   return (
     <>
@@ -24,7 +24,7 @@ const ShoppingBag = () => {
           <div className="clothes-grid">
             {
               shoppingBagItems.map(item => <ItemCard
-                                            key={item.id}
+                                            key={item.shoppingBagId}
                                             category={item.category}
                                             item={item}
                                             setIsItemFavourited={setIsItemFavourited}

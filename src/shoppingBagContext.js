@@ -18,7 +18,22 @@ const ShoppingBagContextProvider = ({children}) => {
   }, [shoppingBagItems])
 
   const addToShoppingBag = (item, size, category) => {
-    setShoppingBagItems(prevItems => [...prevItems, {...item, shoppingBagId: uuidv4(), size, category}])
+    setShoppingBagItems(prevItems => {
+      const itemExists = prevItems.some(prevItem => prevItem.id === item.id && prevItem.size === size)
+      if (itemExists) {
+        return prevItems.map(prevItem => {
+          if (prevItem.id === item.id && prevItem.size === size) {
+            return { ...prevItem, amount: prevItem.amount + 1 }
+          }
+          return prevItem
+        })
+      } else {
+          return [
+            ...prevItems,
+            { ...item, shoppingBagId: uuidv4(), size, category, amount: 1 }
+          ]
+      }
+    })
   }
 
   const removeFromShoppingBag = (shoppingBagId) => {
@@ -26,9 +41,11 @@ const ShoppingBagContextProvider = ({children}) => {
   }
 
   return (
-      <ShoppingBagContext.Provider value={{shoppingBagItems, 
+      <ShoppingBagContext.Provider value={{
+                                       shoppingBagItems, 
                                        addToShoppingBag, 
-                                       removeFromShoppingBag}}
+                                       removeFromShoppingBag
+                                   }}
       >
         {children}
       </ShoppingBagContext.Provider>

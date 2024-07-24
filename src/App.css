@@ -473,7 +473,7 @@ header {
   width: 100%;
   font-size: .5rem;
   font-weight: 300;
-  margin-bottom: 3.5em;
+  /*margin-bottom: 3.5em;*/
 }
 
 .shopping-bag-nav a {

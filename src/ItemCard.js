@@ -26,8 +26,6 @@ const ItemCard = ({
     }
   }, [user])
 
-  console.log('item card', item, 'user', user)
-
   const isFavourite = (item) => {
     if(favorites?.length > 0) {
       return favorites.some((favItem) => favItem.name === item.name)
@@ -136,7 +134,36 @@ const ItemCard = ({
         }
         <p>{item.name}</p>
         <p>{item.price.toLocaleString()} RSD</p>
-        {location.pathname === '/shopping-bag' &&  <p>{item.size}</p>}
+        {location.pathname === '/shopping-bag' &&  (
+          <div>
+            <p>{item.size}</p>
+            <div style={{
+              border: '.3px solid #000', 
+              width: '40%', 
+              display: 'flex', 
+              justifyContent: 'space-between',
+              fontSize: '.8rem',
+            }}>
+              <span style={{
+                width: '33%', 
+                textAlign: 'center', 
+                borderRight: '.3px solid #000',
+                padding: '.1em'
+              }}>-</span>
+              <span style={{
+                width: '33%', 
+                textAlign: 'center', 
+                borderRight: '.3px solid #000',
+                padding: '.1em'
+              }}>{item.amount}</span>
+              <span style={{
+                width: '33%', 
+                textAlign: 'center',
+                padding: '.1em'
+              }}>+</span>
+            </div>
+          </div>
+        )}
       </div>
       {
         location.pathname === '/user-favorites' && (

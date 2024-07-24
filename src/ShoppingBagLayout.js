@@ -4,6 +4,10 @@ import { ShoppingBagContext } from "./shoppingBagContext"
 
 const ShoppingBagLayout = () => {
   const { shoppingBagItems } = useContext(ShoppingBagContext)
+  
+  let shoppingBagItemsNumber = 0
+  
+  shoppingBagItems.forEach(item => shoppingBagItemsNumber += item.amount)
 
   const navLinkActiveStyle = {
     fontWeight: '700',
@@ -17,7 +21,7 @@ const ShoppingBagLayout = () => {
           to='/shopping-bag' 
           style={({isActive}) => isActive ? navLinkActiveStyle : null}
         >
-          {`SHOPPING BAG (${shoppingBagItems.length})`}
+          {`SHOPPING BAG (${shoppingBagItemsNumber})`}
         </NavLink>
         <NavLink 
           to='/shopping-bag/user-favorites' 
