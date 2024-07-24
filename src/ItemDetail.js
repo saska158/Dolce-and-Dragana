@@ -72,7 +72,7 @@ const ItemDetail = () => {
 
       setInfoHeight(`${newHeight}px`)
     }
-  };
+  }
 
   const handleTouchEnd = () => {
     setIsDragging(false)
@@ -90,7 +90,7 @@ const ItemDetail = () => {
       }
   }
 
-  function toggleSelectedItem() {
+  const toggleSelectedItem = () => {
     setShowSelectedItem(true)
     setTimeout(() => {setShowSelectedItem(false)}, 3000)
   }

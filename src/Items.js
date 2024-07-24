@@ -55,7 +55,7 @@ const Items = () => {
   }, [sortOrder, data])
 
     
-  function handleFilterChange(key, value) {
+  const handleFilterChange = (key, value) => {
     setSearchParams(prevParams => {
       if(value === null) {
         prevParams.delete(key)
@@ -77,26 +77,26 @@ const Items = () => {
     })
   }
 
-  function clearAllFilters() {
+  const clearAllFilters = () => {
     setSearchParams(new URLSearchParams())
     setShowColorDropdown(false)
     setShowSizeDropdown(false)
     setShowSortDropDown(false)
   }
 
-  function handleColorButton() {
+  const handleColorButton = () => {
     setShowColorDropdown(!showColorDropdown)
     setShowSizeDropdown(false)
     setShowSortDropDown(false)
   }
 
-  function handleSizeButton() {
+  const handleSizeButton = () => {
     setShowSizeDropdown(!showSizeDropdown)
     setShowColorDropdown(false)
     setShowSortDropDown(false)
   }
 
-  function handleSortButton() {
+  const handleSortButton = () => {
     setShowSortDropDown(!showSortDropdown)
     setShowColorDropdown(false)
     setShowSizeDropdown(false)

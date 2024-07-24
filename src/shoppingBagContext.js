@@ -17,11 +17,11 @@ const ShoppingBagContextProvider = ({children}) => {
     localStorage.setItem('shoppingBagItems', JSON.stringify(shoppingBagItems))
   }, [shoppingBagItems])
 
-  function addToShoppingBag(item, size, category) {
+  const addToShoppingBag = (item, size, category) => {
     setShoppingBagItems(prevItems => [...prevItems, {...item, shoppingBagId: uuidv4(), size, category}])
   }
 
-  function removeFromShoppingBag(shoppingBagId) {
+  const removeFromShoppingBag = (shoppingBagId) => {
     setShoppingBagItems(prevItems => prevItems.filter(item => item.shoppingBagId !== shoppingBagId))    
   }
 

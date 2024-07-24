@@ -10,7 +10,7 @@ const Layout = () => {
   const { shoppingBagItems } = useContext(ShoppingBagContext)
   const { user, logOut } = useAuth()
 
-  function toggleMenu() {
+  const toggleMenu = () => {
     setMenuOpen(prev => !prev) 
   }
 

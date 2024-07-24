@@ -32,11 +32,7 @@ const ItemCard = ({
     if(favorites?.length > 0) {
       return favorites.some((favItem) => favItem.name === item.name)
     }
-  } 
-
-  function toggleSizeTable(itemId) {
-    setShowSizeTable(prevItemId => (prevItemId === itemId ? null : itemId))
-  } 
+  }  
 
   const handleFavouriteClick = async (userId=null, item, itemId) => {
     const stateData = {
@@ -57,12 +53,16 @@ const ItemCard = ({
       }
   }
 
-  function toggleSelectedItem() {
+  const toggleSelectedItem = () => {
     setShowSelectedItem(true)
     setTimeout(() => {setShowSelectedItem(false)}, 3000)
   }
 
-  function toggleFavouritedBox() {
+  const toggleSizeTable = (itemId) => {
+    setShowSizeTable(prevItemId => (prevItemId === itemId ? null : itemId))
+  }
+
+  const toggleFavouritedBox = () => {
     setShowFavouritedBox(true)
     setTimeout(() => {setShowFavouritedBox(false)}, 1000)
   }
