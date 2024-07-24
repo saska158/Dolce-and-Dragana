@@ -13,14 +13,9 @@ export default function UserFavorites() {
     const [showSelectedItem, setShowSelectedItem] = useState(false)
 
     useEffect(() => {
-      // Set up the real-time listener
-      const unsubscribe = getFavoriteItems(user.uid, setFavorites);
-
-      // Cleanup the listener on component unmount
-      return () => unsubscribe && unsubscribe();
+      const unsubscribe = getFavoriteItems(user.uid, setFavorites)
+      return () => unsubscribe && unsubscribe()
     }, [user.uid])
-
-    console.log('from favorites', favorites)
 
     return (
         <div style={{marginLeft: '1em'}}>

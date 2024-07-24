@@ -22,28 +22,26 @@ export default function ItemCard({
 
   useEffect(() => {
     if(user) {
-      // Set up the real-time listener
-    const unsubscribe = getFavoriteItems(user.uid, setFavorites);
-    // Cleanup the listener on component unmount
-    return () => unsubscribe && unsubscribe();
+    const unsubscribe = getFavoriteItems(user.uid, setFavorites)
+    return () => unsubscribe && unsubscribe()
     }
   }, [user])
 
-  console.log(favorites, 'favoriiitees')
   const isFavourite = (item) => {
-    console.log('kjfebvkejbvr')
     if(favorites?.length > 0) {
       return favorites.some((favItem) => favItem.name === item.name)
     }
   } 
-  
 
   function toggleSizeTable(itemId) {
     setShowSizeTable(prevItemId => (prevItemId === itemId ? null : itemId))
   } 
 
   const handleFavouriteClick = async (userId=null, item, itemId) => {
-    const stateData = {message : "YOU MUST LOG IN TO VIEW AND SAVE ITEMS TO YOUR FAVOURITES LISTS."}
+    const stateData = {
+      message : "YOU MUST LOG IN TO VIEW AND SAVE ITEMS TO YOUR FAVOURITES LISTS.",
+      from: location.pathname
+    }
     if(!userId) {
       navigate('/log-in', {state: stateData})
     } else {
@@ -68,8 +66,6 @@ export default function ItemCard({
     setShowFavouritedBox(true)
     setTimeout(() => {setShowFavouritedBox(false)}, 1000)
   }
-
-  console.log('this is item category:', category, item)
 
   return ( 
     <div className="item-container">  
@@ -112,9 +108,7 @@ export default function ItemCard({
           className="add-to-favorites-btn"
           onClick={() => {
             handleFavouriteClick(user && user.uid, item, item.name)
-            //setFavouritedItem(item)
             toggleFavouritedBox()
-            //addFavoriteItem(user.uid, item)
           }} 
         >
           {

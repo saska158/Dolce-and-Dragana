@@ -19,8 +19,7 @@ export default function Login() {
       await signInWithEmailAndPassword(auth, email, password)
       setEmail('')
       setPassword('')
-      //navigate(location.state?.from || '/user')
-      navigate('/shopping-bag/user-favorites', {replace: true})
+      navigate(location.state?.from || '/shopping-bag/user-favorites', {replace: true})
     } catch (error) {
       let customMessage
       if(error.code === 'auth/invalid-credential') {

@@ -25,8 +25,6 @@ export const AuthProvider = ({children}) => {
       setUser(null)
     }  
 
-    console.log("evo ga user", user)
-
     return (
         <AuthContext.Provider value={{user, logOut, setUser}}>
           {!loading && children}
