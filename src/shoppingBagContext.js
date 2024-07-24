@@ -43,6 +43,7 @@ const ShoppingBagContextProvider = ({children}) => {
   return (
       <ShoppingBagContext.Provider value={{
                                        shoppingBagItems, 
+                                       setShoppingBagItems,
                                        addToShoppingBag, 
                                        removeFromShoppingBag
                                    }}

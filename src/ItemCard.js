@@ -13,11 +13,17 @@ const ItemCard = ({
                     setShowFavouritedBox,
                  }) => {
   const { user } = useAuth()
-  const { addToShoppingBag, removeFromShoppingBag } = useContext(ShoppingBagContext)
+  const { 
+    addToShoppingBag, 
+    removeFromShoppingBag, 
+    setShoppingBagItems 
+  } = useContext(ShoppingBagContext)
   const [showSizeTable, setShowSizeTable] = useState(null)
   const [favorites, setFavorites] = useState([])
   const location = useLocation()
   const navigate = useNavigate()
+
+  console.log('evo ga ajtem', item)
 
   useEffect(() => {
     if(user) {
@@ -63,6 +69,34 @@ const ItemCard = ({
   const toggleFavouritedBox = () => {
     setShowFavouritedBox(true)
     setTimeout(() => {setShowFavouritedBox(false)}, 1000)
+  }
+
+  const increaseAmount = (shoppingBagId) => {
+    setShoppingBagItems(prevItems => {
+      const itemExists = prevItems.some(prevItem => prevItem.shoppingBagId === shoppingBagId)
+      if (itemExists) {
+        return prevItems.map(prevItem => {
+          if(prevItem.shoppingBagId === shoppingBagId) {
+            return {...prevItem, amount: prevItem.amount + 1}
+          }
+          return prevItem
+        })
+      }
+    })
+  }
+
+  const decreaseAmount = (shoppingBagId) => {
+    setShoppingBagItems(prevItems => {
+      const itemExists = prevItems.some(prevItem => prevItem.shoppingBagId === shoppingBagId)
+      if (itemExists) {
+        return prevItems.map(prevItem => {
+          if(prevItem.shoppingBagId === shoppingBagId) {
+            return {...prevItem, amount: prevItem.amount > 0 ? prevItem.amount - 1 : 0}
+          }
+          return prevItem
+        })
+      }
+    })
   }
 
   return ( 
@@ -133,7 +167,7 @@ const ItemCard = ({
           )          
         }
         <p>{item.name}</p>
-        <p>{item.price.toLocaleString()} RSD</p>
+        <p>{item.amount ? (item.price * item.amount).toLocaleString() : item.price.toLocaleString()} RSD</p>
         {location.pathname === '/shopping-bag' &&  (
           <div>
             <p>{item.size}</p>
@@ -144,23 +178,31 @@ const ItemCard = ({
               justifyContent: 'space-between',
               fontSize: '.8rem',
             }}>
-              <span style={{
-                width: '33%', 
-                textAlign: 'center', 
-                borderRight: '.3px solid #000',
-                padding: '.1em'
-              }}>-</span>
-              <span style={{
-                width: '33%', 
-                textAlign: 'center', 
-                borderRight: '.3px solid #000',
-                padding: '.1em'
-              }}>{item.amount}</span>
-              <span style={{
-                width: '33%', 
-                textAlign: 'center',
-                padding: '.1em'
-              }}>+</span>
+              <button 
+                style={{
+                  width: '33%', 
+                  textAlign: 'center', 
+                  borderRight: '.3px solid #000',
+                  padding: '.1em'
+                }}
+                onClick={() => decreaseAmount(item.shoppingBagId)}
+              >-</button>
+              <span 
+                style={{
+                  width: '33%', 
+                  textAlign: 'center', 
+                  borderRight: '.3px solid #000',
+                  padding: '.1em'
+                }}
+              >{item.amount}</span>
+              <button 
+                style={{
+                  width: '33%', 
+                  textAlign: 'center',
+                  padding: '.1em'
+                }}
+                onClick={() => increaseAmount(item.shoppingBagId)}
+              >+</button>
             </div>
           </div>
         )}

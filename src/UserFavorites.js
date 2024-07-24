@@ -18,11 +18,12 @@ const UserFavorites = () => {
     }, [user.uid])
 
     return (
-        <div style={{marginLeft: '1em'}}>
-            <p style={{fontWeight: '700'}}>{user.displayName}'s...</p><br />
-            {
-                favorites?.length > 0 ? (
-                    <div className="clothes-grid">
+      <>
+      <div style={showSelectedItem ? {opacity: '.3'} : null}>
+        <p style={{fontWeight: '700'}}>{user.displayName}'s...</p><br />
+        {
+          favorites?.length > 0 ? (
+            <div className="clothes-grid">
               {favorites.map(fav => <ItemCard 
                                       key={fav.name} 
                                       item={fav} 
@@ -31,12 +32,13 @@ const UserFavorites = () => {
                                       setShowFavouritedBox={setShowFavouritedBox}
                                       setShowSelectedItem={setShowSelectedItem}
                                       setSelectedItem={setSelectedItem}
-                                    />)}
+                                    />
+              )}
             </div>
-                ) : 'YOU DO NOT HAVE ANY SAVED ITEMS'
-            }
-
-{showSelectedItem ? (
+          ) : 'YOU DO NOT HAVE ANY SAVED ITEMS'
+        }
+      </div>
+      {showSelectedItem ? (
           <div className="selected-item-show">
             <button onClick={() => setShowSelectedItem(false)}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -51,8 +53,7 @@ const UserFavorites = () => {
             <Link to='/shopping-bag'>SEE SHOPPING BAG</Link>
           </div>
         ) : null} 
-
-            {
+        {
           showFavouritedBox ? 
             <div className="favourited-item-show">
               {
@@ -68,7 +69,7 @@ const UserFavorites = () => {
             </div> 
           : null
         }
-        </div>
+      </>
     )
 }
 

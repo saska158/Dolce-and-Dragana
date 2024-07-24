@@ -142,7 +142,8 @@ const Items = () => {
   }
 
     return (
-      <div className="content-container">
+      <>
+      <div className="content-container" style={showSelectedItem ? {opacity: '.3'} : null}>
         <div className="display-options">
           <div className="filter-buttons">
             <button
@@ -234,7 +235,9 @@ const Items = () => {
           }
         </div>
 
-        {
+        
+      </div>
+      {
           showSelectedItem ? (
             <div className="selected-item-show">
               <button 
@@ -260,7 +263,7 @@ const Items = () => {
                   isItemFavourited ? (
                     <>
                       <p>Saved</p>
-                      <Link to='/user-wishlist'>SEE LIST</Link>
+                      <Link to='/shopping-bag/user-favorites'>SEE LIST</Link>
                     </>
                   ) : (
                     <p>The item has been removed from favourites.</p>
@@ -269,7 +272,7 @@ const Items = () => {
               </div> 
             : null
           }
-      </div>
+      </>
     )
 }
 

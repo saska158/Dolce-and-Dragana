@@ -53,7 +53,7 @@ const ShoppingBag = () => {
               isItemFavourited ? (
                 <>
                   <p>Saved</p>
-                  <Link to='/user-wishlist'>SEE LIST</Link>
+                  <Link to='/shopping-bag/user-favorites'>SEE LIST</Link>
                 </>
               ) : (
                 <p>The item has been removed from favourites.</p>

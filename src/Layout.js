@@ -14,8 +14,6 @@ const Layout = () => {
   
   shoppingBagItems.forEach(item => shoppingBagItemsNumber += item.amount)
 
-  console.log('shopping bag items', shoppingBagItems)
-
   const toggleMenu = () => {
     setMenuOpen(prev => !prev) 
   }
