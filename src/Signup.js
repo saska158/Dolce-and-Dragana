@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { auth } from "./api"
 import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth"
 
-export default function Signup() {
+const Signup = () => {
   const initialState = {
     email: '',
     password: '',
@@ -150,3 +150,5 @@ export default function Signup() {
     </div>
   )
 }
+
+export default Signup

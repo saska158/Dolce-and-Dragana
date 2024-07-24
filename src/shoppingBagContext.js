@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 const ShoppingBagContext = createContext()
 
-function ShoppingBagContextProvider({children}) {
+const ShoppingBagContextProvider = ({children}) => {
   const [shoppingBagItems, setShoppingBagItems] = useState(JSON.parse(localStorage.getItem('shoppingBagItems')) || [])
 
   useEffect(() => {
@@ -18,11 +18,11 @@ function ShoppingBagContextProvider({children}) {
   }, [shoppingBagItems])
 
   function addToShoppingBag(item, size, category) {
-    setShoppingBagItems(prevItems => [...prevItems, {...item, uniqueId: uuidv4(), size, category}])
+    setShoppingBagItems(prevItems => [...prevItems, {...item, shoppingBagId: uuidv4(), size, category}])
   }
 
-  function removeFromShoppingBag(uniqueId) {
-    setShoppingBagItems(prevItems => prevItems.filter(item => item.uniqueId !== uniqueId))    
+  function removeFromShoppingBag(shoppingBagId) {
+    setShoppingBagItems(prevItems => prevItems.filter(item => item.shoppingBagId !== shoppingBagId))    
   }
 
   return (

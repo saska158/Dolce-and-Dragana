@@ -70,7 +70,6 @@ export async function getItem(route, id) {
 
 export const addFavoriteItem = async (userId, item, category) => {
   try {
-    console.log('aaaddeeeeddd')
     const favoritesRef = collection(db, 'users', userId, 'favorites')
     await addDoc(favoritesRef, {...item, category})
   } catch (error) {

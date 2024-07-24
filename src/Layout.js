@@ -3,7 +3,7 @@ import { Link, NavLink, Outlet, useLocation } from "react-router-dom"
 import { ShoppingBagContext } from "./shoppingBagContext"
 import { useAuth } from "./authContext"
 
-export default function Layout() {
+const Layout = () => {
   const [menuOpen, setMenuOpen] = useState(false)
   const [menuCategory, setMenuCategory] = useState('women')
   const location = useLocation()
@@ -122,3 +122,4 @@ export default function Layout() {
     )
 }
 
+export default Layout

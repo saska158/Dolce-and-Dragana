@@ -4,15 +4,14 @@ import { ShoppingBagContext } from "./shoppingBagContext"
 import { addFavoriteItem, removeFavoriteItem, getFavoriteItems } from "./api"
 import { useAuth } from "./authContext"
 
-
-export default function ItemCard({
-                          category, 
-                          item, 
-                          setShowSelectedItem, 
-                          setSelectedItem, 
-                          setIsItemFavourited,
-                          setShowFavouritedBox,
-                        }) {
+const ItemCard = ({
+                    category, 
+                    item, 
+                    setShowSelectedItem, 
+                    setSelectedItem, 
+                    setIsItemFavourited,
+                    setShowFavouritedBox,
+                 }) => {
   const { user } = useAuth()
   const { addToShoppingBag, removeFromShoppingBag } = useContext(ShoppingBagContext)
   const [showSizeTable, setShowSizeTable] = useState(null)
@@ -26,6 +25,8 @@ export default function ItemCard({
     return () => unsubscribe && unsubscribe()
     }
   }, [user])
+
+  console.log('item card', item, 'user', user)
 
   const isFavourite = (item) => {
     if(favorites?.length > 0) {
@@ -45,7 +46,6 @@ export default function ItemCard({
     if(!userId) {
       navigate('/log-in', {state: stateData})
     } else {
-        console.log('favorited item')
         if (isFavourite(item)) {
           setIsItemFavourited(false)
           const favoriteId = favorites.filter(favItem => favItem.name === itemId)[0].uniqueId
@@ -126,7 +126,7 @@ export default function ItemCard({
         {
           location.pathname === '/shopping-bag' && (
             <div onClick={e => e.preventDefault()}>
-              <button onClick={() => removeFromShoppingBag(item.uniqueId)}>
+              <button onClick={() => removeFromShoppingBag(item.shoppingBagId)}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="item-icon">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                 </svg>
@@ -166,3 +166,5 @@ export default function ItemCard({
     </div>
   )
 }
+
+export default ItemCard

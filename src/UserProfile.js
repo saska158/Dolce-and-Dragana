@@ -1,7 +1,7 @@
 import { useAuth } from "./authContext"
 import { NavLink } from "react-router-dom"
 
-export default function UserProfile() {
+const UserProfile = () => {
     const { user } = useAuth()
 
     return (
@@ -18,3 +18,5 @@ export default function UserProfile() {
         </div>
     )
 }
+
+export default UserProfile

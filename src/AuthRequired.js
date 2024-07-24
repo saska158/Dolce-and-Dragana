@@ -1,7 +1,7 @@
 import { Outlet, Navigate, useLocation } from "react-router-dom"
 import { useAuth } from "./authContext"
 
-export default function AuthRequired() {
+const AuthRequired = () => {
     const { user } = useAuth()
     const location = useLocation()
 
@@ -18,3 +18,5 @@ export default function AuthRequired() {
 
     return <Outlet />
 }
+
+export default AuthRequired

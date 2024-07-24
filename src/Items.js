@@ -4,7 +4,7 @@ import { fetchData } from "./api"
 import ItemCard from "./ItemCard"
 
 
-export default function Items() {
+const Items = () => {
   const [data, setData] = useState([])
   const [sortedItems, setSortedItems] = useState(data)
   const { category } = useParams()
@@ -28,8 +28,6 @@ export default function Items() {
   const sizeFilter = searchParams.get('size')
   const sortOrder = searchParams.get('sortOrder')
  
-  //console.log('clothes grid data', data)
-    
   useEffect(() => {
     const loadData = async () => {
       setLoading(true)
@@ -109,7 +107,6 @@ export default function Items() {
   const sizes = data.flatMap(item => item.sizes)
   const uniqueSizes = [...new Set(sizes)]
   
-  //const displayedItems = sizeFilter ? data.filter(item => item.sizes.some(size => size === sizeFilter)) : data
   const filteredItems = sortedItems.filter(item => {
     const matchesColor = colorFilter ? item.color === colorFilter : true
     const matchesSize = sizeFilter ? item.sizes.some(size => size === sizeFilter) : true
@@ -276,3 +273,4 @@ export default function Items() {
     )
 }
 
+export default Items

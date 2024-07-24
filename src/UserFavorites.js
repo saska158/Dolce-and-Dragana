@@ -4,7 +4,7 @@ import { useAuth } from "./authContext"
 import { getFavoriteItems } from "./api"
 import ItemCard from "./ItemCard"
 
-export default function UserFavorites() {
+const UserFavorites = () => {
     const { user } = useAuth()
     const [favorites, setFavorites] = useState([])
     const [isItemFavourited, setIsItemFavourited] = useState(false)
@@ -71,3 +71,5 @@ export default function UserFavorites() {
         </div>
     )
 }
+
+export default UserFavorites

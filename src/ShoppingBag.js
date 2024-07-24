@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { ShoppingBagContext } from "./shoppingBagContext"
 import ItemCard from "./ItemCard"
 
-export default function ShoppingBag() {
+const ShoppingBag = () => {
   const { shoppingBagItems } = useContext(ShoppingBagContext)
   const [isItemFavourited, setIsItemFavourited] = useState(false)
   const [showFavouritedBox, setShowFavouritedBox] = useState(false)
@@ -66,3 +66,5 @@ export default function ShoppingBag() {
      
   )
 }
+
+export default ShoppingBag

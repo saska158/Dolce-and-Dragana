@@ -2,7 +2,7 @@ import { useContext } from "react"
 import { NavLink, Outlet } from "react-router-dom"
 import { ShoppingBagContext } from "./shoppingBagContext"
 
-export default function ShoppingBagLayout() {
+const ShoppingBagLayout = () => {
   const { shoppingBagItems } = useContext(ShoppingBagContext)
 
   const navLinkActiveStyle = {
@@ -35,3 +35,5 @@ export default function ShoppingBagLayout() {
     </div>
   )
 }
+
+export default ShoppingBagLayout

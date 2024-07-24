@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom"
 import { useAuth } from "./authContext"
 import { getAuth, reload } from "firebase/auth"
 
-export default function EmailVerification() {
+const EmailVerification = () => {
     const {user, setUser} = useAuth()
     const [isEmailVerified, setIsEmailVerified] = useState(user?.emailVerified)
     const [verificationMessage, setVerificationMessage] = useState('')
@@ -46,3 +46,5 @@ export default function EmailVerification() {
         </>
     )
 }
+
+export default EmailVerification

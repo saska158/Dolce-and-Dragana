@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { getAuth, sendPasswordResetEmail } from "firebase/auth"
 
-export default function PasswordRecover() {
+const PasswordRecover = () => {
     const auth = getAuth()
     const [email, setEmail] = useState('')
     const [message, setMessage] = useState('We will send you an email with instructions on how to recover it.')
@@ -71,3 +71,5 @@ export default function PasswordRecover() {
         </div>
     )
 }
+
+export default PasswordRecover

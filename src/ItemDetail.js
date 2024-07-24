@@ -4,7 +4,7 @@ import { getItem } from "./api"
 import { ShoppingBagContext } from "./shoppingBagContext"
 import useScreenWidth from "./useScreenWidth"
 
-export default function ItemDetail() {
+const ItemDetail = () => {
   const { addToShoppingBag } = useContext(ShoppingBagContext)
   const [item, setItem] = useState({})
   const [selectedSize, setSelectedSize] = useState(null)
@@ -220,3 +220,5 @@ export default function ItemDetail() {
     ) : null
   )
 }
+
+export default ItemDetail
