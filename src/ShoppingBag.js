@@ -8,9 +8,9 @@ const ShoppingBag = () => {
   const [isItemFavourited, setIsItemFavourited] = useState(false)
   const [showFavouritedBox, setShowFavouritedBox] = useState(false)
   
-  let totalAmount = 0
+  /*let totalAmount = 0
   shoppingBagItems.forEach(item => totalAmount += item.price * item.amount)
-    
+    */
   return (
     <>
       {!shoppingBagItems.length ? 
@@ -32,18 +32,6 @@ const ShoppingBag = () => {
                                            />)
             }  
           </div>  
-          <footer className="shopping-bag-footer">
-            <div className="terms-privacy">
-              <p style={{padding: '1em'}}>
-                * By continuing, I declare that I have read and accept the Purchase Conditions 
-                and understand D&D's Privacy and Cookie Policy.
-              </p>
-            </div>
-            <div className="total-amount">
-              {totalAmount && `TOTAL ${totalAmount.toLocaleString()} RSD`}
-            </div>
-            <button className="shopping-bag-footer-button">CONTINUE</button>
-          </footer>
         </>  
       }
       {

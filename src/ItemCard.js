@@ -23,8 +23,6 @@ const ItemCard = ({
   const location = useLocation()
   const navigate = useNavigate()
 
-  console.log('evo ga ajtem', item)
-
   useEffect(() => {
     if(user) {
     const unsubscribe = getFavoriteItems(user.uid, setFavorites)
@@ -103,7 +101,7 @@ const ItemCard = ({
     <div className="item-container">  
       <Link to={`/${category}/${item.id}`} key={item.id} className='item-link'>
         <div className='item'>
-          <img className='item-img' src={item.images[0]} alt="item-image" />
+          <img className='item-img' src={item.mainImageUrl} alt="item-image" />
             {
               location.pathname !== '/shopping-bag' && location.pathname !== '/user-favorites' ? (
                 <>
@@ -158,7 +156,10 @@ const ItemCard = ({
         {
           location.pathname === '/shopping-bag' && (
             <div onClick={e => e.preventDefault()}>
-              <button onClick={() => removeFromShoppingBag(item.shoppingBagId)}>
+              <button 
+                onClick={() => removeFromShoppingBag(item.shoppingBagId)}
+                className="remove-from-favorites-btn"
+              >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="item-icon">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                 </svg>
@@ -166,46 +167,51 @@ const ItemCard = ({
             </div>
           )          
         }
-        <p>{item.name}</p>
-        <p>{item.amount ? (item.price * item.amount).toLocaleString() : item.price.toLocaleString()} RSD</p>
-        {location.pathname === '/shopping-bag' &&  (
-          <div>
-            <p>{item.size}</p>
-            <div style={{
-              border: '.3px solid #000', 
-              width: '40%', 
-              display: 'flex', 
-              justifyContent: 'space-between',
-              fontSize: '.8rem',
-            }}>
-              <button 
-                style={{
-                  width: '33%', 
-                  textAlign: 'center', 
-                  borderRight: '.3px solid #000',
-                  padding: '.1em'
-                }}
-                onClick={() => decreaseAmount(item.shoppingBagId)}
-              >-</button>
-              <span 
-                style={{
-                  width: '33%', 
-                  textAlign: 'center', 
-                  borderRight: '.3px solid #000',
-                  padding: '.1em'
-                }}
-              >{item.amount}</span>
-              <button 
-                style={{
-                  width: '33%', 
-                  textAlign: 'center',
-                  padding: '.1em'
-                }}
-                onClick={() => increaseAmount(item.shoppingBagId)}
-              >+</button>
+        <div className="item-description-details">
+          <p>{item.name}</p>
+          <p>{item.amount ? (item.price * item.amount).toLocaleString() : item.price.toLocaleString()} RSD</p>
+          {location.pathname === '/shopping-bag' &&  (
+            <div>
+              <p>{item.size}</p>
+              <div 
+              className="item-amount"
+              style={{
+                border: '.3px solid #000', 
+                width: 'fit-content', 
+                display: 'flex', 
+                justifyContent: 'center',
+                fontSize: '.8rem',
+              }}>
+                {
+                  item.amount !== 1 && (
+                    <button 
+                      style={{
+                      textAlign: 'center', 
+                      borderRight: '.3px solid #000',
+                      padding: '.3em .8em',
+                    }}
+                      onClick={() => decreaseAmount(item.shoppingBagId)}
+                    >-</button>
+                  ) 
+                }
+                <span 
+                  style={{
+                    textAlign: 'center', 
+                    borderRight: '.3px solid #000',
+                    padding: '.3em .8em',
+                  }}
+                >{item.amount}</span>
+                <button 
+                  style={{
+                    textAlign: 'center',
+                    padding: '.3em .8em',
+                  }}
+                  onClick={() => increaseAmount(item.shoppingBagId)}
+                >+</button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
       {
         location.pathname === '/user-favorites' && (

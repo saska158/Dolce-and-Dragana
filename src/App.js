@@ -6,6 +6,9 @@ import Items from './Items'
 import ItemDetail from './ItemDetail'
 import ShoppingBagLayout from './ShoppingBagLayout'
 import ShoppingBag from './ShoppingBag'
+import BillingAddress from './BillingAddress'
+import Payment from './Payment'
+import OrderCompleted from './OrderCompleted'
 import Login from './Login'
 import Signup from './Signup'
 import PasswordRecover from './PasswordRecover'
@@ -30,6 +33,8 @@ function App() {
            <Route path=':category/:id' element={<ItemDetail />}/>
            <Route path='shopping-bag' element={<ShoppingBagLayout />}>
             <Route index element={<ShoppingBag />} />
+            <Route path='billing-address' element={<BillingAddress />} />
+            <Route path='payment' element={<Payment />} />
             <Route element={<AuthRequired />}>
              <Route path='user-favorites' element={<UserFavorites />} />
             </Route>
@@ -41,6 +46,7 @@ function App() {
            <Route element={<AuthRequired />}>
              <Route path='/user' element={<UserProfile />} />
            </Route>
+           <Route path='order-completed' element={<OrderCompleted />} />
          </Route>
         </Routes>
        </BrowserRouter>

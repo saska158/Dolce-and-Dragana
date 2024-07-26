@@ -72,11 +72,10 @@ export const addFavoriteItem = async (userId, item, category) => {
   try {
     const favoritesRef = collection(db, 'users', userId, 'favorites')
     await addDoc(favoritesRef, {...item, category})
-  } catch (error) {
+  } catch(error) {
     console.error("Error adding favorite item: ", error)
   }
 }
-
 
 export const removeFavoriteItem = async (userId, favoriteId) => {
   try {
@@ -100,5 +99,39 @@ export const getFavoriteItems = (userId, callback) => {
     return unsubscribe
   } catch (error) {
     console.error("Error fetching favorite items: ", error)
+  }
+}
+
+export const addBillingAddress = async (userId, billingAddress) => {
+  try {
+    const billingAddressRef = collection(db, 'users', userId, 'billingAddress')
+    await addDoc(billingAddressRef, billingAddress)
+  } catch(error) {
+    console.error("Error adding billing address", error)
+  }
+}
+
+export const checkBillingAddress = async (userId) => {
+  try {
+    // Reference to the user's billing address subcollection
+    const billingAddressCol = collection(db, 'users', userId, 'billingAddress')
+
+    // Get all documents in the billingAddress subcollection
+    const querySnapshot = await getDocs(billingAddressCol)
+   // console.log('Query snapshot:', querySnapshot);
+    //console.log('Documents:', querySnapshot.docs.map(doc => doc.data()));
+
+    return !querySnapshot.empty
+/*
+    // Check if any documents exist
+    if (!querySnapshot.empty) {
+      // Billing address exists, navigate to route 1
+      navigate('/route1')
+    } else {
+      // Billing address does not exist, navigate to route 2
+      navigate('/route2')
+    }*/
+  } catch (error) {
+    console.error('Error checking billing address:', error)
   }
 }
