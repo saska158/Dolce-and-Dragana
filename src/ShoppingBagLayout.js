@@ -35,8 +35,6 @@ const ShoppingBagLayout = () => {
     color: '#000'
   }
 
-  console.log(user)
-
   const updateBillingAddress = async () => {
     setLoading(true)
     setError(null)
@@ -54,7 +52,6 @@ const ShoppingBagLayout = () => {
   const hasBillingAddress = useCallback(async () => {
     if(user) {
       const hasAddress = await checkBillingAddress(user?.uid)
-      console.log('has it',hasAddress)
       setHasBillingAddressData(hasAddress)
     }
   }, [user])
@@ -94,8 +91,6 @@ const ShoppingBagLayout = () => {
       }
     }
   }
-
-  console.log('payment', paymentMethod)
 
   if(loading) {
     return (

@@ -1,8 +1,22 @@
+import { useState, useEffect, useCallback } from "react"
 import { useAuth } from "./authContext"
+import { getBillingAddress } from "./api"
 import { NavLink } from "react-router-dom"
 
 const UserProfile = () => {
     const { user } = useAuth()
+    const [billingAddress, setBillingAddress] = useState(null)
+
+    const fetchBillingAddress = useCallback(async () => {
+      const data = await getBillingAddress(user.uid)
+      console.log(data)
+      setBillingAddress(data)
+    }, [user])     
+
+
+    useEffect(() => {
+      fetchBillingAddress()
+    }, [user, fetchBillingAddress])
 
     return (
         <div className="content-container">
@@ -14,6 +28,20 @@ const UserProfile = () => {
               <p>personal details:</p><br />
               <p>{user.email}</p>
               <p>{user.displayName}</p><br />
+              {
+                billingAddress && (
+                  <div>
+                    <p>{billingAddress.address}</p><br />
+                    <p>{billingAddress.city}</p><br />
+                    <p>{billingAddress.zipCode}</p><br />
+                    <p>{billingAddress.region}</p><br />
+                    <p>
+                      <span>{billingAddress.prefix}</span>
+                      <span>{billingAddress.telephone}</span>
+                    </p>
+                  </div>
+                )
+              }
             </div>
         </div>
     )

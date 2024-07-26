@@ -51,7 +51,7 @@ export const fetchData = async (route) => {
 }
 
 
-export async function getItem(route, id) {
+export const getItem = async (route, id) => {
   const category = routeToCollectionMap[`/${route}`]
   if (!category) {
     throw new Error(`No collection mapped for route: ${route}`)
@@ -111,26 +111,22 @@ export const addBillingAddress = async (userId, billingAddress) => {
   }
 }
 
+export const getBillingAddress = async (userId) => {
+  try {
+    const billingAddressCol = collection(db, 'users', userId, 'billingAddress')
+    const querySnapshot = await getDocs(billingAddressCol)
+    const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    return data[0]
+  } catch (error) {
+    console.error('Error checking billing address:', error)
+  }
+}
+
 export const checkBillingAddress = async (userId) => {
   try {
-    // Reference to the user's billing address subcollection
     const billingAddressCol = collection(db, 'users', userId, 'billingAddress')
-
-    // Get all documents in the billingAddress subcollection
     const querySnapshot = await getDocs(billingAddressCol)
-   // console.log('Query snapshot:', querySnapshot);
-    //console.log('Documents:', querySnapshot.docs.map(doc => doc.data()));
-
     return !querySnapshot.empty
-/*
-    // Check if any documents exist
-    if (!querySnapshot.empty) {
-      // Billing address exists, navigate to route 1
-      navigate('/route1')
-    } else {
-      // Billing address does not exist, navigate to route 2
-      navigate('/route2')
-    }*/
   } catch (error) {
     console.error('Error checking billing address:', error)
   }
