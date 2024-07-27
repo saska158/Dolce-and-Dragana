@@ -4,7 +4,7 @@ import { getAuth, sendPasswordResetEmail } from "firebase/auth"
 const PasswordRecover = () => {
     const auth = getAuth()
     const [email, setEmail] = useState('')
-    const [message, setMessage] = useState('We will send you an email with instructions on how to recover it.')
+    const [message, setMessage] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
@@ -52,22 +52,27 @@ const PasswordRecover = () => {
 
     return (
         <div className="content-container">
-            <div className="form-container">
-                <div>
+          {
+            message ? 
+              <div>{message}</div> : (
+                <div className="form-container">
+                  <div>
                     <h4>RESET PASSWORD</h4>
-                    <p>{message}</p>
+                    <p>We will send you an email with instructions on how to recover it.</p>
                     <form className="form">
-                        <input
-                          type="email"
-                          placeholder="E-MAIL" 
-                          value={email}
-                          onChange={e => setEmail(e.target.value)}
-                          required
-                        />
-                        <button onClick={e => sendResetEmail(e, email)}>CONTINUE</button>
+                      <input
+                        type="email"
+                        placeholder="E-MAIL" 
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        required
+                      />
+                      <button onClick={e => sendResetEmail(e, email)}>CONTINUE</button>
                     </form>
+                  </div>
                 </div>
-            </div>
+              )
+          }
         </div>
     )
 }
