@@ -1,6 +1,5 @@
 import { useState, useRef, createRef } from "react"
 import gsap from "gsap"
-import Draggable from "react-draggable"
 
 const Homepage = () => {
     const videoUrls = [
@@ -36,39 +35,9 @@ const Homepage = () => {
       }
     }
 
-    const handleDrag = (data) => {
-      const { x } = data
-      gsap.to(videoRefs.current[index].current, {
-        duration: 0.3,
-        x: x
-      })
-    }
-  
-    const handleStop = (data) => {
-      const { deltaX } = data
-      if (Math.abs(deltaX) > window.innerWidth / 3) {
-        if (deltaX > 0) handlePrev()
-        else handleNext()
-      } else {
-        gsap.to(videoRefs.current[index].current, {
-          duration: 0.3,
-          x: 0
-        })
-      }
-    }
-  
-
-
     return (
         <div className="slideshow-container">
           {videoUrls.map((url, i) => (
-            <Draggable
-            key={i}
-            axis="x"
-            onDrag={handleDrag}
-            onStop={handleStop}
-            bounds="parent"
-          >
            <video
               key={i}
               src={`${process.env.PUBLIC_URL}/assets/homepage_videos/${url}`}
@@ -78,7 +47,6 @@ const Homepage = () => {
               muted
               loop
             />
-          </Draggable>
           ))}
           <button className="prev" onClick={handlePrev}>&#10094;</button>
           <button className="next" onClick={handleNext}>&#10095;</button>
