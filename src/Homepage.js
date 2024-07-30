@@ -1,4 +1,6 @@
-import { useState } from "react"
+import { useState, useRef, createRef } from "react"
+import gsap from "gsap"
+import { useDrag } from '@use-gesture/react'
 
 const Homepage = () => {
     const videoUrls = [
@@ -11,24 +13,46 @@ const Homepage = () => {
         'homepage_video_13.mp4'
     ]
 
-    const [currentSlide, setCurrentSlide] = useState(0)
+    const videoRefs = useRef([])
 
-
-    const handleNext = () => {
-        setCurrentSlide((prevSlide) => (prevSlide + 1) % videoUrls.length);
+    if (videoRefs.current.length !== videoUrls.length) {
+      videoRefs.current = Array(videoUrls.length).fill().map((_, i) => videoRefs.current[i] || createRef())
     }
 
-    const handlePrev = () => {
-        setCurrentSlide((prevSlide) => (prevSlide - 1 + videoUrls.length) % videoUrls.length);
+    const [index, setIndex] = useState(0)
+
+    function handleNext() {
+      console.log('next', videoRefs.current)
+      if (index < videoUrls.length - 1) {
+        setIndex(index + 1)
+        gsap.to(videoRefs.current[index + 1].current, {duration: 0.6, x: 0})
+      }
     }
+  
+    function handlePrev() {
+      if (index > 0) {
+        setIndex(index - 1)
+        gsap.to(videoRefs.current[index].current, {duration: 0.6, x: '-100%'})
+      }
+    }
+
+    const bind = useDrag(({ down, movement: [mx], direction: [xDir], distance, cancel }) => {
+      if (down && distance > window.innerWidth / 3) {
+        if (xDir > 0) handlePrev()
+        else handleNext()
+        cancel()
+      }
+    })
+
 
     return (
-        <div className="slideshow-container">
-          {videoUrls.map((url, index) => (
+        <div className="slideshow-container" {...bind()}>
+          {videoUrls.map((url, i) => (
             <video
-              key={index}
+              key={i}
               src={`${process.env.PUBLIC_URL}/assets/homepage_videos/${url}`}
-              className={`slide ${index === currentSlide ? 'active' : ''}`}
+              className={`slide ${i === 0 ? 'first-slide' : ''}`}
+              ref={videoRefs.current[i]}
               autoPlay
               muted
               loop
@@ -41,3 +65,4 @@ const Homepage = () => {
 }
 
 export default Homepage
+

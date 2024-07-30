@@ -1,7 +1,8 @@
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom"
 import { ShoppingBagContext } from "./shoppingBagContext"
 import { useAuth } from "./authContext"
+import useScreenWidth from "./useScreenWidth"
 
 const Layout = () => {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -9,6 +10,7 @@ const Layout = () => {
   const location = useLocation()
   const { shoppingBagItems } = useContext(ShoppingBagContext)
   const { user, logOut } = useAuth()
+  const { isSmallScreen } = useScreenWidth()
 
   let shoppingBagItemsNumber = 0
   
@@ -18,11 +20,9 @@ const Layout = () => {
     setMenuOpen(prev => !prev) 
   }
 
-  /*useEffect(() => {
-    if(!menuOpen) {
-      setMenuCategory('women')
-    }
-  }, [menuOpen])*/
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [location.pathname])
 
   const linkActiveStyle = {
     fontWeight: '700',
@@ -34,13 +34,19 @@ const Layout = () => {
         <header>
            <button onClick={toggleMenu} className={`menu-button ${location.pathname === '/' ? 'white' : 'black'}`}>
             {
-              !menuOpen ? (
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="menu-toggle">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
-                </svg>
+              !isSmallScreen ? (
+                !menuOpen ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="menu-toggle">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="menu-toggle">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                  </svg>
+                )
               ) : (
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="menu-toggle">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
                 </svg>
               )
             }
@@ -50,6 +56,15 @@ const Layout = () => {
                {/*<img src={`${process.env.PUBLIC_URL}/assets/d&d_logo_black.png`} />*/}
                DOLCE&DRAGANA
              </Link>
+             {
+              menuOpen && isSmallScreen ? (
+                <button onClick={toggleMenu} className="menu-button" style={{position: 'fixed', top: '2%', left: '2%'}}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="menu-toggle">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              ) : null
+             }
              <div className={`menu ${menuOpen ? 'menu-visible' : ''}`}>
                 <ul className="menu-nav">
                   <li 
@@ -127,3 +142,4 @@ const Layout = () => {
 }
 
 export default Layout
+

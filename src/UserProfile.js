@@ -25,16 +25,16 @@ const UserProfile = () => {
               <NavLink to='/shopping-bag/user-favorites' className={(isActive) => isActive ? 'selected' : ''}>FAVORITES</NavLink>
             </nav>
             <div className="personal-details">
-              <p>personal details:</p><br />
-              <p>{user.email}</p>
               <p>{user.displayName}</p><br />
+              <p>email:</p>
+              <p style={{textTransform: 'lowercase'}}>{user.email}</p><br />
               {
                 billingAddress && (
-                  <div>
-                    <p>{billingAddress.address}</p><br />
-                    <p>{billingAddress.city}</p><br />
-                    <p>{billingAddress.zipCode}</p><br />
-                    <p>{billingAddress.region}</p><br />
+                  <div style={{textTransform: 'none'}}>
+                    <p style={{textTransform: 'uppercase'}}>address:</p>
+                    <p>{billingAddress.address}</p> 
+                    <p>{billingAddress.city}, {billingAddress.zipCode}</p>
+                    <p>{billingAddress.region}</p>
                     <p>
                       <span>{billingAddress.prefix}</span>
                       <span>{billingAddress.telephone}</span>
