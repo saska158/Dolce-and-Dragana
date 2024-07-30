@@ -37,7 +37,7 @@ const Homepage = () => {
     }
 
     const handleDrag = (data) => {
-      const { x, deltaX } = data
+      const { x } = data
       gsap.to(videoRefs.current[index].current, {
         duration: 0.3,
         x: x
