@@ -36,13 +36,23 @@ const Homepage = () => {
       }
     }
 
-    const bind = useDrag(({ down, movement: [mx], direction: [xDir], distance, cancel }) => {
-      if (down && distance > window.innerWidth / 3) {
+    const bind = useDrag((state) => {
+      const { offsetX, direction: [xDir], distance, memo = index } = state
+  
+      if (state.last && distance > window.innerWidth / 3) {
         if (xDir > 0) handlePrev()
         else handleNext()
-        cancel()
+        state.event.preventDefault()
+      } else {
+        gsap.to(videoRefs.current[memo].current, {
+          duration: 0.3,
+          x: state.down ? offsetX : 0
+        })
       }
+  
+      return memo
     })
+  
 
 
     return (
