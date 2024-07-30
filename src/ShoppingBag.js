@@ -8,9 +8,6 @@ const ShoppingBag = () => {
   const [isItemFavourited, setIsItemFavourited] = useState(false)
   const [showFavouritedBox, setShowFavouritedBox] = useState(false)
   
-  /*let totalAmount = 0
-  shoppingBagItems.forEach(item => totalAmount += item.price * item.amount)
-    */
   return (
     <>
       {!shoppingBagItems.length ? 

@@ -24,14 +24,14 @@ const Homepage = () => {
       console.log('next', videoRefs.current)
       if (index < videoUrls.length - 1) {
         setIndex(index + 1)
-        gsap.to(videoRefs.current[index + 1].current, {duration: 0.6, x: 0})
+        gsap.to(videoRefs.current[index + 1].current, {duration: 1, x: 0, ease: "power4.out"})
       }
     }
   
     function handlePrev() {
       if (index > 0) {
         setIndex(index - 1)
-        gsap.to(videoRefs.current[index].current, {duration: 0.6, x: '-100%'})
+        gsap.to(videoRefs.current[index].current, {duration: 0.6, x: '-100%', ease: "power4.in"})
       }
     }
 

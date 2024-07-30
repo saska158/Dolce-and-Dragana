@@ -94,18 +94,12 @@ input {
   object-fit: cover;
   object-position: 45% 65%;
   z-index: -1;
-  /*opacity: 0;*/
   transform: translateX(-100%);
-  /*transition: opacity .25s ease;*/
 }
 
 .first-slide {
   transform: translateX(0);
 }
-
-/*.slide.active {
-  opacity: 1;
-}*/
 
 .prev, .next {
   cursor: pointer;
@@ -136,75 +130,12 @@ input {
   transform: translateX(-10%);
 }
 
-/*
-.slideshow-container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.slide {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 45% 65%;
-  z-index: -1;
-  opacity: 1;
-}
-
-.prev,
-.next {
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  width: auto;
-  padding: 16px;
-  margin-top: -22px;
-  color: white;
-  font-weight: 200;
-  font-size: 30px;
-  user-select: none;
-  z-index: 10;
-}
-
-.prev {
-  left: 0;
-}
-
-.next {
-  right: 0;
-}*/
-
 .container {
   position: relative;
   width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
 }
-
-/*.container {
-  position: relative;
-  width: 100%;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-  
-.homepage-video {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  object-fit: cover;
-  object-position: 45% 35%;
-  z-index: -1;
-}*/
 
 /*__________HEADER__________*/
 
@@ -635,12 +566,11 @@ header {
   bottom: 0;
   left: 0;
   width: 100%;
-  /*height: 35%;*/
   z-index: 9;
   background-color: #fff;
-  min-height: 28%; /* Minimum height */
-  max-height: 100%; /* Maximum height to fit content */
-  overflow-y: auto; /* Make it scrollable */
+  min-height: 28%; 
+  max-height: 100%; 
+  overflow-y: auto; 
   display: flex;
   flex-direction: column;
 
@@ -755,19 +685,25 @@ header {
   font-weight: 700;
 }
 
+.loader-and-error {
+  width: 30%;
+  margin-top: 2em;
+  margin-left: 1em;
+  font-weight: 300;
+  font-size: 1.3rem;
+}
+ 
 /*__________LOGIN/SIGN-UP__________*/
 
 .form-container {
   display: flex;
   flex-direction: column;
   gap: 3em;
-  /*margin:  1em 6em;*/
   font-weight: 200;
   color: #494949;
 }
 
 .form-container div {
-  /*width: 35%;*/
   padding: 1em;
 }
 
@@ -867,8 +803,8 @@ label {
 .log-in-message {
   font-weight: 300;
   font-size: .5rem; 
-  color: #494949; 
-  margin-left: 1em;
+  color: #494949;
+  margin-bottom: 1.5em;
 }
 
 .register-link {
@@ -1046,6 +982,7 @@ label {
     height: 100vh;
     width: 30%;
     font-size: .8rem;
+    transform: translateX(100%);
   }
 
   .selected-item-show div,
@@ -1075,11 +1012,14 @@ label {
   .item-detail-info {
     border-top: none;
     border: .5px solid #000;
+    z-index: 1;
   }
 
   .item-detail-images {
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
   
   .item-detail-img {
@@ -1088,14 +1028,17 @@ label {
     bottom: 0;
     width: 100%;
     min-height: 100%;
-  
-
-    opacity: 0;
+    object-fit: cover;
+    transform: translateX(-100%);
   }
 
-  .item-detail-img.active {
+  .item-detail-img-first {
+    transform: translateX(0);
+  }
+
+  /*.item-detail-img.active {
     opacity: 1;
-  }
+  }*/
   
   .item-detail-info {
     font-size: .7rem;
@@ -1142,10 +1085,23 @@ label {
     width: 35%;
   }
 
+  .log-in-message {
+    font-size: .7rem; 
+  }
+  
+
   /*__________PAYMENT__________*/
 
   .payment-methods {
     width: 30%;
+  }
+
+
+  /*__________ADDITION__________*/
+
+  .loader-and-error {
+    margin-left: 3em;
+    font-size: 2.5rem;
   }
 }
 

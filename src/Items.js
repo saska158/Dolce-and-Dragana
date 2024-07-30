@@ -128,7 +128,7 @@ const Items = () => {
   if(loading) {
     return (
       <div className="content-container">
-        <h1>Loading...</h1>
+        <p className="loader-and-error">Loading...</p>
       </div>
     )
   }
@@ -136,7 +136,7 @@ const Items = () => {
   if(error) {
     return (
       <div className="content-container">
-        <h1>{error.message}</h1>
+        <p className="loader-and-error">{error.message}</p>
       </div>
     )
   }

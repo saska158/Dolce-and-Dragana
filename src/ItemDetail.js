@@ -1,8 +1,9 @@
-import { useState, useEffect, useContext, useRef } from "react"
+import { useState, useEffect, useContext, useRef, createRef } from "react"
 import { Link, useParams } from "react-router-dom"
 import { getItem } from "./api"
 import { ShoppingBagContext } from "./shoppingBagContext"
 import useScreenWidth from "./useScreenWidth"
+import gsap from "gsap"
 
 const ItemDetail = () => {
   const { addToShoppingBag } = useContext(ShoppingBagContext)
@@ -12,8 +13,9 @@ const ItemDetail = () => {
   const [error, setError] = useState(false)
   const [selectedItem, setSelectedItem] = useState(null)
   const [showSelectedItem, setShowSelectedItem] = useState(false)
+  const selectedItemRef = useRef(null)
   const [warning, setWarning] = useState(false)
-  const [currentImage, setCurrentImage] = useState(0)
+  //const [currentImage, setCurrentImage] = useState(0)
   const { id, category } = useParams()
 
   const [infoHeight, setInfoHeight] = useState('28%')
@@ -95,18 +97,55 @@ const ItemDetail = () => {
     setTimeout(() => {setShowSelectedItem(false)}, 3000)
   }
 
-  const handleNext = () => {
+  /*const handleNext = () => {
     setCurrentImage((prevImage) => (prevImage + 1) % item.images.length);
   }
 
   const handlePrev = () => {
     setCurrentImage((prevImage) => (prevImage - 1 + item.images.length) % item.images.length);
+  }*/
+
+
+
+  
+  const imgRefs = useRef([])
+
+  useEffect(() => {
+    if(item && item.images) {
+      if (imgRefs.current.length !== item.images.length) {
+        imgRefs.current = Array(item.images.length).fill().map((_, i) => imgRefs.current[i] || createRef())
+      }
+    }
+  }, [item])
+
+  const [index, setIndex] = useState(0)
+
+  function handleNext() {
+    if (index < item.images.length - 1) {
+      setIndex(index + 1)
+      gsap.to(imgRefs.current[index + 1].current, {duration: 1, x: 0, ease: "power4.out"})
+    }
   }
+
+  function handlePrev() {
+    if (index > 0) {
+      setIndex(index - 1)
+      gsap.to(imgRefs.current[index].current, {duration: 0.6, x: '-100%', ease: "power4.in"})
+    }
+  }
+
+  useEffect(() => {
+    if(showSelectedItem) {
+      gsap.to(selectedItemRef.current, {duration: 0.7, x: 0, ease: "power4.out"})
+    } else {
+      gsap.to(selectedItemRef.current, {duration: 0.7, x: '100%', ease: "power4.in"})
+    }
+  }, [showSelectedItem])
 
   if(loading) {
     return (
       <div className="content-container">
-        <h1>Loading...</h1>
+        <p className="loader-and-error">Loading...</p>
       </div>
     )
   }
@@ -114,7 +153,7 @@ const ItemDetail = () => {
   if(error) {
     return (
       <div className="content-container">
-        <h1>{error.message}</h1>
+        <p className="loader-and-error">{error.message}</p>
       </div>
     )
   }
@@ -149,11 +188,13 @@ const ItemDetail = () => {
             </div>
           </div>
           <div className="item-detail-images">
-              {item.images && item.images.map((image, index) => <img 
+              {item.images && item.images.map((image, i) => <img 
                                                          key={image} 
                                                          src={image} 
                                                          alt="item"
-                                                         className={`item-detail-img ${index === currentImage ? 'active' : ''}`}
+                                                         //className={`item-detail-img ${index === currentImage ? 'active' : ''}`}
+                                                         className={`item-detail-img ${i === 0 ? 'item-detail-img-first' : ''}`}
+                                                         ref={imgRefs.current[i]}
                                                         />)
               }
               { !isSmallScreen && (
@@ -198,8 +239,8 @@ const ItemDetail = () => {
               ) 
             }
           </div>
-          {showSelectedItem && (
-            <div className="selected-item-show">
+          {/*{showSelectedItem && (
+            <div className="selected-item-show" ref={selectedItemRef.current}> 
               <button 
                 onClick={() => setShowSelectedItem(false)}
               >
@@ -214,7 +255,26 @@ const ItemDetail = () => {
               </div>
                 <Link to='/shopping-bag'>SEE SHOPPING BAG</Link>
               </div>
-          )}
+          )}*/}
+          {
+            selectedItem && (
+              <div className="selected-item-show" ref={selectedItemRef}> 
+              <button 
+                onClick={() => setShowSelectedItem(false)}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+              </button>
+              <p>SIZE {selectedSize} ADDED TO YOUR SHOPPING BAG</p>
+              <div>
+                <img src={selectedItem.images[0]} alt="selected-image" />
+                <p>{selectedItem.name}</p>
+              </div>
+                <Link to='/shopping-bag'>SEE SHOPPING BAG</Link>
+              </div>
+            )
+          }
         </div>
       </div>
     ) : null

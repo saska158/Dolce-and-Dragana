@@ -41,7 +41,7 @@ const Login = () => {
   if(loading) {
     return (
       <div className="content-container">
-        <h1>Loading...</h1>
+        <p className="loader-and-error">Loading...</p>
       </div>
     )
   }
@@ -59,14 +59,15 @@ const Login = () => {
 
   return (
     <div className="content-container">
-      {
+
+      <div className="form-container"> 
+        <div>
+        {
         location.state?.message ? 
           <p className="log-in-message">
             {location.state.message}
           </p> : null
-      }  
-      <div className="form-container">
-        <div>
+      } 
           <h4>LOG IN TO YOUR ACCOUNT</h4>
           <form className="form">
             <input

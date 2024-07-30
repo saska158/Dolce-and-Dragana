@@ -95,7 +95,7 @@ const ShoppingBagLayout = () => {
   if(loading) {
     return (
       <div className="content-container">
-        <h1>Loading...</h1>
+        <p className="loader-and-error">Loading...</p>
       </div>
     )
   }
