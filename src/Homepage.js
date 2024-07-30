@@ -1,6 +1,6 @@
 import { useState, useRef, createRef } from "react"
 import gsap from "gsap"
-import { useDrag } from '@use-gesture/react'
+import Draggable from "react-draggable"
 
 const Homepage = () => {
     const videoUrls = [
@@ -36,29 +36,40 @@ const Homepage = () => {
       }
     }
 
-    const bind = useDrag((state) => {
-      const { offsetX, direction: [xDir], distance, memo = index } = state
+    const handleDrag = (data) => {
+      const { x, deltaX } = data
+      gsap.to(videoRefs.current[index].current, {
+        duration: 0.3,
+        x: x
+      })
+    }
   
-      if (state.last && distance > window.innerWidth / 3) {
-        if (xDir > 0) handlePrev()
+    const handleStop = (data) => {
+      const { deltaX } = data
+      if (Math.abs(deltaX) > window.innerWidth / 3) {
+        if (deltaX > 0) handlePrev()
         else handleNext()
-        state.event.preventDefault()
       } else {
-        gsap.to(videoRefs.current[memo].current, {
+        gsap.to(videoRefs.current[index].current, {
           duration: 0.3,
-          x: state.down ? offsetX : 0
+          x: 0
         })
       }
-  
-      return memo
-    })
+    }
   
 
 
     return (
-        <div className="slideshow-container" {...bind()}>
+        <div className="slideshow-container">
           {videoUrls.map((url, i) => (
-            <video
+            <Draggable
+            key={i}
+            axis="x"
+            onDrag={handleDrag}
+            onStop={handleStop}
+            bounds="parent"
+          >
+           <video
               key={i}
               src={`${process.env.PUBLIC_URL}/assets/homepage_videos/${url}`}
               className={`slide ${i === 0 ? 'first-slide' : ''}`}
@@ -67,6 +78,7 @@ const Homepage = () => {
               muted
               loop
             />
+          </Draggable>
           ))}
           <button className="prev" onClick={handlePrev}>&#10094;</button>
           <button className="next" onClick={handleNext}>&#10095;</button>
