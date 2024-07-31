@@ -6,9 +6,7 @@ const Homepage = () => {
         'homepage_video_9.mp4',
         'homepage_video_11.mp4',
         'homepage_video_8.mp4',
-        'homepage_video_4.mp4',
         'homepage_video_5.mp4',
-        'homepage_video_6.mp4',
         'homepage_video_13.mp4'
     ]
 
