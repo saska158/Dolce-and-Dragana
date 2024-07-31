@@ -446,25 +446,22 @@ header {
   left: 0;
   right: 0;
   width: 100%;
-  height: 100px;
+  height: 80px;
   border-top: .5px solid #000;
   background-color: #fff;
   display: flex;
-  justify-content: center;
-  align-items: center;
   font-size: .6rem;
 }
 
 .terms-privacy {
-  margin-right: auto;
-  font-size: .3rem;
-  width: 25%;
   display: none;
 }
 
 .total-amount {
-  width: 30%;
-  text-align: right;
+  text-align: center;
+  font-weight: 700;
+  align-self: center;
+  width: 50%;
 }
 
 .shopping-bag-footer-button {
@@ -472,8 +469,7 @@ header {
   color: #fff;
   padding: 1em 3em;
   font-size: .7rem;
-  align-self: stretch;
-  margin-left: auto;
+  width: 50%;
 }
 
 .shopping-bag-footer-button:hover {
@@ -957,19 +953,66 @@ label {
 
   .shopping-bag-footer {
     font-size: .75rem;
-    display: flex;
+    align-items: center;
     justify-content: flex-end;
   }
 
   .terms-privacy {
-    font-size: .5rem;
     display: block;
+    text-transform: none;
+    font-size: .6rem;
+    width: 40%;
+    margin-right: auto;
+    color: #494949;
+  }
+
+  .total-amount {
+    width: fit-content;
+    font-size: .6rem;
+    padding-right: 5em;
   }
 
   .shopping-bag-footer-button {
     cursor: pointer;
     padding: 1em 5em;
+    width: fit-content;
+    align-self: stretch;
   }
+  /*
+  .shopping-bag-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 80px;
+  border-top: .5px solid #000;
+  background-color: #fff;
+  display: flex;
+  font-size: .6rem;
+}
+
+.terms-privacy {
+  margin-right: auto;
+  font-size: .3rem;
+  display: none;
+}
+
+.total-amount {
+  text-align: center;
+  font-weight: 700;
+  align-self: center;
+  width: 50%;
+}
+
+.shopping-bag-footer-button {
+  background-color: #000;
+  color: #fff;
+  padding: 1em 3em;
+  font-size: .7rem;
+  width: 50%;
+}
+  */
 
   /*__________POP-UPs__________*/
 

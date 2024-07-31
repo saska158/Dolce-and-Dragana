@@ -156,7 +156,8 @@ const ShoppingBagLayout = () => {
               </p>
             </div>
             <div className="total-amount">
-              {totalAmount && `TOTAL ${totalAmount.toLocaleString()} RSD`}
+              {totalAmount && `TOTAL  ${totalAmount.toLocaleString()} RSD`}<br/>
+              <span style={{fontWeight: '300', fontSize: '.5rem'}}>* INCLUDING VAT</span>
             </div>
             <button 
               className="shopping-bag-footer-button"
