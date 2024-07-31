@@ -10,12 +10,12 @@ const Homepage = () => {
     ]
 
     const videoRefs = useRef([])
+    const [index, setIndex] = useState(0)
+    const [currentSlide, setCurrentSlide] = useState(0)
 
     if (videoRefs.current.length !== videoUrls.length) {
       videoRefs.current = Array(videoUrls.length).fill().map((_, i) => videoRefs.current[i] || createRef())
     }
-
-    const [index, setIndex] = useState(0)
 
     function handleNext() {
       console.log('next', videoRefs.current)
@@ -23,6 +23,7 @@ const Homepage = () => {
         setIndex(index + 1)
         gsap.to(videoRefs.current[index + 1].current, {duration: 1, x: 0, ease: "power4.out"})
       }
+      setCurrentSlide((prevSlide) => (prevSlide === videoUrls.length - 1 ? 0 : prevSlide + 1))
     }
   
     function handlePrev() {
@@ -30,6 +31,7 @@ const Homepage = () => {
         setIndex(index - 1)
         gsap.to(videoRefs.current[index].current, {duration: 0.6, x: '-100%', ease: "power4.in"})
       }
+      setCurrentSlide((prevSlide) => (prevSlide === 0 ? videoUrls.length - 1 : prevSlide - 1))
     }
 
     return (
@@ -45,8 +47,20 @@ const Homepage = () => {
               loop
             />
           ))}
-          <button className="prev" onClick={handlePrev}>&#10094;</button>
-          <button className="next" onClick={handleNext}>&#10095;</button>
+          {currentSlide !== 0 && (
+            <button className="prev" onClick={handlePrev}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+              </svg>
+            </button>
+          )}
+          {currentSlide !== videoUrls.length - 1 && (
+            <button className="next" onClick={handleNext}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+              </svg>
+            </button>
+          )}
         </div>
     )
 }

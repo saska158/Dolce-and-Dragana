@@ -105,13 +105,9 @@ input {
   cursor: pointer;
   position: absolute;
   top: 50%;
-  width: auto;
-  padding: 16px;
-  margin-top: -22px;
-  color: white;
-  font-weight: 200;
-  font-size: 30px;
-  user-select: none;
+  width: 50px;
+  color: #fff;
+  transition: all .5s;
 }
 
 .prev {
@@ -922,6 +918,15 @@ label {
   .homepage-video {
     object-position: 5% 85%;
   }
+
+  .prev, .next {
+    width: 70px;
+  }
+
+  .prev-small, .next-small {
+    width: 40px;
+  }
+  
 
   /*__________HEADER__________*/
 

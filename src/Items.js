@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
 import { fetchData } from "./api"
 import ItemCard from "./ItemCard"
+import gsap from "gsap"
 
 
 const Items = () => {
@@ -27,6 +28,8 @@ const Items = () => {
   const colorFilter = searchParams.get('color')
   const sizeFilter = searchParams.get('size')
   const sortOrder = searchParams.get('sortOrder')
+
+
  
   useEffect(() => {
     const loadData = async () => {
@@ -101,6 +104,16 @@ const Items = () => {
     setShowColorDropdown(false)
     setShowSizeDropdown(false)
   }
+
+  const selectedItemRef = useRef(null)
+
+  useEffect(() => {
+    if(showSelectedItem) {
+      gsap.to(selectedItemRef.current, {duration: 0.7, x: 0, ease: "power4.out"})
+    } else {
+      gsap.to(selectedItemRef.current, {duration: 0.7, x: '100%', ease: "power4.in"})
+    }
+  }, [showSelectedItem])
 
   const colors = data.map(item => item.color)
   const uniqueColors = [...new Set(colors)]
@@ -237,7 +250,7 @@ const Items = () => {
 
         
       </div>
-      {
+        {/* {
           showSelectedItem ? (
             <div className="selected-item-show">
               <button 
@@ -255,7 +268,28 @@ const Items = () => {
               <Link to='/shopping-bag'>SEE SHOPPING BAG</Link>
             </div>
             ) : null
-          } 
+          } */}
+
+{
+            selectedItem && (
+              <div className="selected-item-show" ref={selectedItemRef}> 
+              <button 
+                onClick={() => setShowSelectedItem(false)}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+              </button>
+              <p>SIZE {selectedItem.size} ADDED TO YOUR SHOPPING BAG</p>
+              <div>
+                <img src={selectedItem.images[0]} alt="selected-image" />
+                <p>{selectedItem.name}</p>
+              </div>
+                <Link to='/shopping-bag'>SEE SHOPPING BAG</Link>
+              </div>
+            )
+          }
+
           {
             showFavouritedBox ? 
               <div className="favourited-item-show">

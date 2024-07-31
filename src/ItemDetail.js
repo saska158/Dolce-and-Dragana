@@ -15,7 +15,7 @@ const ItemDetail = () => {
   const [showSelectedItem, setShowSelectedItem] = useState(false)
   const selectedItemRef = useRef(null)
   const [warning, setWarning] = useState(false)
-  //const [currentImage, setCurrentImage] = useState(0)
+  const [currentSlide, setCurrentSlide] = useState(0)
   const { id, category } = useParams()
 
   const [infoHeight, setInfoHeight] = useState('28%')
@@ -23,6 +23,8 @@ const ItemDetail = () => {
   const startYRef = useRef(0)
   const startHeightRef = useRef(0)
   const infoRef = useRef(null)
+  const imgRefs = useRef([])
+  const [index, setIndex] = useState(0)
 
   const { isSmallScreen } = useScreenWidth()
 
@@ -41,7 +43,7 @@ const ItemDetail = () => {
       }
     } 
     loadItem()
-  }, [id, category])//netlify reko da dodam category
+  }, [id, category])
 
   useEffect(() => {
     if (isDragging) {
@@ -97,18 +99,7 @@ const ItemDetail = () => {
     setTimeout(() => {setShowSelectedItem(false)}, 3000)
   }
 
-  /*const handleNext = () => {
-    setCurrentImage((prevImage) => (prevImage + 1) % item.images.length);
-  }
-
-  const handlePrev = () => {
-    setCurrentImage((prevImage) => (prevImage - 1 + item.images.length) % item.images.length);
-  }*/
-
-
-
   
-  const imgRefs = useRef([])
 
   useEffect(() => {
     if(item && item.images) {
@@ -118,13 +109,13 @@ const ItemDetail = () => {
     }
   }, [item])
 
-  const [index, setIndex] = useState(0)
 
   function handleNext() {
     if (index < item.images.length - 1) {
       setIndex(index + 1)
       gsap.to(imgRefs.current[index + 1].current, {duration: 1, x: 0, ease: "power4.out"})
     }
+    setCurrentSlide((prevSlide) => (prevSlide === item.images.length - 1 ? 0 : prevSlide + 1))
   }
 
   function handlePrev() {
@@ -132,6 +123,7 @@ const ItemDetail = () => {
       setIndex(index - 1)
       gsap.to(imgRefs.current[index].current, {duration: 0.6, x: '-100%', ease: "power4.in"})
     }
+    setCurrentSlide((prevSlide) => (prevSlide === 0 ? item.images.length - 1 : prevSlide - 1))
   }
 
   useEffect(() => {
@@ -174,7 +166,8 @@ const ItemDetail = () => {
 
   return (
     item ? (
-      <div className="content-container">
+      <>
+      <div className="content-container" style={showSelectedItem ? {opacity: '.3'} : null}>
         <div className="item-detail">
           <div className="item-detail-info item-detail-info-two">
             <div>
@@ -192,15 +185,26 @@ const ItemDetail = () => {
                                                          key={image} 
                                                          src={image} 
                                                          alt="item"
-                                                         //className={`item-detail-img ${index === currentImage ? 'active' : ''}`}
                                                          className={`item-detail-img ${i === 0 ? 'item-detail-img-first' : ''}`}
                                                          ref={imgRefs.current[i]}
                                                         />)
               }
               { !isSmallScreen && (
                 <>
-                  <button className="prev" onClick={handlePrev}>&#10094;</button>
-                  <button className="next" onClick={handleNext}>&#10095;</button>
+                  {currentSlide !== 0 && (
+                    <button className="prev prev-small" onClick={handlePrev}>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                      </svg>
+                    </button>
+                  )}
+                  {item.images && currentSlide !== item.images.length - 1 && (
+                    <button className="next next-small" onClick={handleNext}>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                      </svg>
+                    </button>
+                  )}
                 </>
               )}
           </div>
@@ -239,24 +243,9 @@ const ItemDetail = () => {
               ) 
             }
           </div>
-          {/*{showSelectedItem && (
-            <div className="selected-item-show" ref={selectedItemRef.current}> 
-              <button 
-                onClick={() => setShowSelectedItem(false)}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                </svg>
-              </button>
-              <p>SIZE {selectedSize} ADDED TO YOUR SHOPPING BAG</p>
-              <div>
-                <img src={selectedItem.images[0]} alt="selected-image" />
-                <p>{selectedItem.name}</p>
-              </div>
-                <Link to='/shopping-bag'>SEE SHOPPING BAG</Link>
-              </div>
-          )}*/}
-          {
+        </div>
+      </div>
+      {
             selectedItem && (
               <div className="selected-item-show" ref={selectedItemRef}> 
               <button 
@@ -275,8 +264,7 @@ const ItemDetail = () => {
               </div>
             )
           }
-        </div>
-      </div>
+      </>
     ) : null
   )
 }
