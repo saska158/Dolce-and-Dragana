@@ -21,6 +21,8 @@ const PasswordRecover = () => {
             let customMessage
             if (error.code === 'auth/invalid-email') {
                 customMessage = `WARNING: Enter a valid e-mail address.`
+            } else if(error.code === 'auth/missing-email') {
+              customMessage = `WARNING: Enter an e-mail address.`
             } else {
                 customMessage = `Error signing up: ${error.message}`
             }
@@ -56,17 +58,19 @@ const PasswordRecover = () => {
             message ? 
               <div>{message}</div> : (
                 <div className="form-container">
-                  <div>
+                  <div className="form-container-div">
                     <h4>RESET PASSWORD</h4>
                     <p>We will send you an email with instructions on how to recover it.</p>
                     <form className="form">
                       <input
                         type="email"
+                        id="email"
                         placeholder="E-MAIL" 
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                         required
                       />
+                      <label htmlFor="email" className="input-message">&#9432; Enter your e-mail address</label>
                       <button onClick={e => sendResetEmail(e, email)}>CONTINUE</button>
                     </form>
                   </div>

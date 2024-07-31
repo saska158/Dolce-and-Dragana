@@ -688,6 +688,12 @@ header {
   font-weight: 300;
   font-size: 1.3rem;
 }
+
+.final-message {
+  width: fit-content;
+  margin: 0 auto;
+  padding: 1em;
+}
  
 /*__________LOGIN/SIGN-UP__________*/
 
@@ -699,7 +705,7 @@ header {
   color: #494949;
 }
 
-.form-container div {
+.form-container-div {
   padding: 1em;
 }
 
@@ -717,7 +723,6 @@ header {
 .form {
   display: flex;
   flex-direction: column;
-  gap: 2em;
   padding-top: 3em;
 }
 
@@ -747,16 +752,47 @@ header {
 .form input {
   border-bottom: .5px solid #cccaca;
   color: #000;
-  padding-bottom: .7em;
   font-size: .9rem;
   font-weight: 200;
   letter-spacing: 1px;
+  transition: border-color 0.3s;
+  margin-top: 2em;
+}
+
+.form input:first-child {
+  margin-top: 0;
 }
 
 input::placeholder {
-  color: #cccaca;
   font-size: .7rem;
   font-weight: 200;
+  color: #cccaca;
+  transition: font-size 0.3s;
+}
+
+input:focus {
+  border-color: #000;
+}
+
+input:focus::placeholder {
+  font-size: .5rem;
+}
+
+.input-message {
+  display: block;
+  text-transform: none;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.3s, opacity 0.3s;
+}
+
+input:focus + .input-message {
+  visibility: visible;
+  opacity: 1;
+}
+
+input:checked {
+  background-color: #fff;
 }
 
 label {
@@ -765,6 +801,38 @@ label {
   display: flex;
   align-items: flex-start;
   gap: .5em;
+}
+
+.checkbox-label {
+  margin-top: 2em;
+}
+
+#checkbox2 {
+  margin-top: 0;
+}
+
+.password-container {
+  padding: 0;
+  align-self: stretch;
+  position: relative;
+  margin-top: 2em;
+}
+
+.password-container input {
+  margin: 0;
+  width: 100%;
+}
+
+.password-container span {
+  width: 20px;
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.password-container span:hover {
+  cursor: pointer;
 }
 
 .password-recover-link {
@@ -1124,7 +1192,7 @@ label {
     margin:  1em 6em;
   }
   
-  .form-container div {
+  .form-container-div {
     width: 35%;
   }
 
@@ -1145,6 +1213,11 @@ label {
   .loader-and-error {
     margin-left: 3em;
     font-size: 2.5rem;
+  }
+
+  .final-message {
+    margin: 0;
+    margin-left: 7em;
   }
 }
 

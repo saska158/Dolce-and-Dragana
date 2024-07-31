@@ -124,7 +124,7 @@ const Layout = () => {
                 <Link to="/user">{user.displayName}</Link> : 
                 <Link to="/log-in">log in</Link> 
             }
-                <Link to="/help">help</Link>
+                {/*<Link to="/help">help</Link>*/}
             { 
               location.pathname !== '/shopping-bag' && 
               <Link className="shopping-bag-link" to="/shopping-bag">
