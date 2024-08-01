@@ -729,7 +729,7 @@ header {
   display: flex;
   flex-direction: column;
   gap: 3em;
-  font-weight: 400;
+  font-weight: 300;
   color: #494949;
 }
 
@@ -739,7 +739,7 @@ header {
 
 .form-container h4 {
   font-size: .95rem;
-  font-weight: 400;
+  font-weight: 300;
 }
 
 .form-container a,
@@ -756,19 +756,20 @@ header {
 
 .form button {
   margin-top: 2.5em;
-  border: .5px solid #000;
+  border: 1px solid #000;
 }
 
 .form button,
 .form-container a {
   padding: 1em 0;
-  font-weight: 400;
+  font-weight: 300;
   color: #494949;
 } 
 
 .form-container button:hover,
 .form-container a:hover {
   color: #cccaca;
+  border: 1px solid #cccaca;
 }
 
 .form-container a {
@@ -778,10 +779,10 @@ header {
 }
 
 .form input {
-  border-bottom: .5px solid #cccaca;
+  border-bottom: 1px solid #cccaca;
   color: #000;
   font-size: .9rem;
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: 1px;
   transition: border-color 0.3s;
   margin-top: 2em;
