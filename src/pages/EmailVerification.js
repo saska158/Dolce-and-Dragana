@@ -30,15 +30,17 @@ const EmailVerification = () => {
           {
             !isEmailVerified ? (
                 <div className="content-container">
-                  <h2>Two More Steps to Creating Your Account</h2>
-                  <p>
-                    1. A verification email has been sent to your email address. Please check your inbox and follow the instructions to verify your account.
-                  </p>
-                  <p>
-                    2. Once you have verified your email, click the button below to confirm your verification status.
-                  </p>
-                  <button onClick={checkEmailVerified}>I've Verified My Email</button>
-                  { verificationMessage && <p>{verificationMessage}</p> }
+                  <div className="email-verification-content">
+                    <h4>Two More Steps to Creating Your Account</h4><br />
+                    <p>
+                      1. A verification email has been sent to your email address. Please check your inbox and follow the instructions to verify your account.
+                    </p><br />
+                    <p>
+                      2. Once you have verified your email, click the button below to confirm your verification status.
+                    </p><br />
+                    <button onClick={checkEmailVerified}>I've Verified My Email</button>
+                    { verificationMessage && <p>{verificationMessage}</p> }
+                  </div>
                 </div>
             ) : <Navigate to="/shopping-bag/user-favorites" />
           }

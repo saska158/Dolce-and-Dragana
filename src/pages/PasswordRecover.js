@@ -57,7 +57,7 @@ const PasswordRecover = () => {
         <div className="content-container">
           {
             message ? 
-              <div>{message}</div> : (
+              <div style={{marginLeft: '2em'}}>{message}</div> : (
                 <div className="form-container">
                   <div className="form-container-div">
                     <h4>RESET PASSWORD</h4>
