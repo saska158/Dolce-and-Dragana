@@ -45,6 +45,8 @@ const Homepage = () => {
               autoPlay
               muted
               loop
+              playsInline
+              preload="auto"
             />
           ))}
           {currentSlide !== 0 && (
