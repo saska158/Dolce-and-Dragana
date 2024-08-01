@@ -261,27 +261,9 @@ const Items = () => {
 
         
       </div>
-        {/* {
-          showSelectedItem ? (
-            <div className="selected-item-show">
-              <button 
-                onClick={() => setShowSelectedItem(false)}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                </svg>
-              </button>
-              <p>SIZE {selectedItem.size} ADDED TO YOUR SHOPPING BAG</p>
-              <div>
-                <img src={selectedItem.images[0]} alt="selected-item" />
-                <p>{selectedItem.name}</p>
-              </div>
-              <Link to='/shopping-bag'>SEE SHOPPING BAG</Link>
-            </div>
-            ) : null
-          } */}
+     
 
-{
+          {
             selectedItem && (
               <div className="selected-item-show" ref={selectedItemRef}> 
               <button 
