@@ -266,6 +266,13 @@ header {
   color: #757373;
 }
 
+.filter-buttons button:hover,
+.filter-buttons button:active,
+.filter-buttons button:focus {
+  color: #000;
+  font-weight: 700;
+}
+
 .filter-table-options {
   border: .5px solid #000;
   width: fit-content;
@@ -580,7 +587,7 @@ header {
 
 .item-detail-info {
   border-top: .3px solid #000;
-  font-size: .43rem;
+  font-size: .5rem;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -600,6 +607,7 @@ header {
 
 .item-detail-description {
   padding: 1em;
+  text-transform: none;
 }
 
 .item-detail-info-two {
@@ -1043,6 +1051,10 @@ label {
     display: flex;
     justify-content: center;
     gap: 1em;
+  }
+
+  .filter-buttons button {
+    font-size: .7rem;
   }
   
   .clothes-grid {

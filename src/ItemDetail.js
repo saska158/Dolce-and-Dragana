@@ -150,8 +150,7 @@ const ItemDetail = () => {
               <p>*{item.color}</p>
             </div>
             <div className="item-detail-description">
-              Dress made of 100% linen. Round neckline and thin adjustable straps. 
-              Front slit at the hem. Lining. Invisible side zip fastening.
+              {item.description}
             </div>
             <div className="item-detail-sizes">
               {item?.sizes?.map(size => <button 
