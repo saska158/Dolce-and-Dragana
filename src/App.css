@@ -466,10 +466,6 @@ header {
   width: 50%;
 }
 
-.shopping-bag-footer-button:hover {
-  background-color: #494949;
-}
-
 .empty {
   width: 70%;
   padding: 5em;
@@ -718,6 +714,10 @@ header {
   padding-top: 3em;
 }
 
+.form-billing {
+  gap: 2em;
+}
+
 .form button {
   margin-top: 2.5em;
   border: 1px solid #000;
@@ -749,6 +749,10 @@ header {
   letter-spacing: 1px;
   transition: border-color 0.3s;
   margin-top: 2em;
+}
+
+.form-section input {
+  width: 100%;
 }
 
 .form input:first-child {
@@ -867,7 +871,6 @@ label {
   border: .5px solid #000; 
   text-align: center;
 }
-
 /*__________EMAIL VERIFICATION__________*/
 
 .email-verification-content {
@@ -1099,6 +1102,10 @@ label {
     align-self: stretch;
   }
 
+  .shopping-bag-footer-button:hover {
+    background-color: #494949;
+  }
+
   /*__________POP-UPs__________*/
 
   .selected-item-show {
@@ -1201,16 +1208,32 @@ label {
     display: flex;
     flex-direction: row;
     gap: 3em;
-    margin:  1em 6em;
+    margin: 0 6em;
   }
-  
+
   .form-container-div {
     width: 35%;
+  }
+
+  .form-container-billing {
+    width: 70%;
+  }
+
+  .form-billing {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 5em;
+  }
+
+  .form-section {
+    width: 50%;
   }
 
   .log-in-message {
     font-size: .7rem; 
   }
+
 
   /*__________EMAIL VERIFICATION__________*/
 
