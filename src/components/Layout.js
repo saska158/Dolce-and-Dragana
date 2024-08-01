@@ -1,22 +1,27 @@
 import { useState, useContext, useEffect, useRef } from "react"
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom"
-import { ShoppingBagContext } from "./shoppingBagContext"
-import { useAuth } from "./authContext"
-import useScreenWidth from "./useScreenWidth"
+import { ShoppingBagContext } from "../contexts/shoppingBagContext"
+import { useAuth } from "../contexts/authContext"
+import useScreenWidth from "../utils/useScreenWidth"
 import gsap from "gsap"
 
 const Layout = () => {
+  const { user, logOut } = useAuth()
   const [menuOpen, setMenuOpen] = useState(false)
   const [menuCategory, setMenuCategory] = useState('women')
-  const location = useLocation()
   const { shoppingBagItems } = useContext(ShoppingBagContext)
-  const { user, logOut } = useAuth()
+  const location = useLocation()
   const { isSmallScreen } = useScreenWidth()
   const menuRef = useRef(null)
 
   let shoppingBagItemsNumber = 0
   
   shoppingBagItems.forEach(item => shoppingBagItemsNumber += item.amount)
+
+  const linkActiveStyle = {
+    fontWeight: '700',
+    color: '#000'
+  }
 
   const toggleMenu = () => {
     setMenuOpen(prev => !prev) 
@@ -25,11 +30,6 @@ const Layout = () => {
   useEffect(() => {
     setMenuOpen(false)
   }, [location.pathname])
-
-  const linkActiveStyle = {
-    fontWeight: '700',
-    color: '#000'
-  }
 
   useEffect(() => {
     if(isSmallScreen) {
@@ -131,7 +131,6 @@ const Layout = () => {
                 <Link to="/user">{user.displayName}</Link> : 
                 <Link to="/log-in">log in</Link> 
             }
-                {/*<Link to="/help">help</Link>*/}
             { 
               location.pathname !== '/shopping-bag' && 
               <Link className="shopping-bag-link" to="/shopping-bag">
@@ -139,8 +138,8 @@ const Layout = () => {
               </Link> 
             }
             { 
-                  user && user.emailVerified ? <button onClick={logOut}>log out</button> : null 
-                }
+              user && user.emailVerified ? <button onClick={logOut}>log out</button> : null 
+            }
            </div>
         </header>
         <Outlet />

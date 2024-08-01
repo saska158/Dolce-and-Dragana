@@ -5,6 +5,7 @@ const PasswordRecover = () => {
     const auth = getAuth()
     const [email, setEmail] = useState('')
     const [message, setMessage] = useState('')
+    
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 

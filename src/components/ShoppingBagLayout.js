@@ -1,11 +1,12 @@
 import { useState, useContext, useEffect, useCallback } from "react"
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom"
-import { ShoppingBagContext } from "./shoppingBagContext"
-import { useAuth } from "./authContext"
-import { addBillingAddress, checkBillingAddress } from "./api"
+import { ShoppingBagContext } from "../contexts/shoppingBagContext"
+import { useAuth } from "../contexts/authContext"
+import { addBillingAddress, checkBillingAddress } from "../utils/api"
 
 const ShoppingBagLayout = () => {
   const { user } = useAuth()
+  const { shoppingBagItems, setShoppingBagItems } = useContext(ShoppingBagContext)
   const initialState = {
     address: '',
     zipCode: '',
@@ -17,12 +18,12 @@ const ShoppingBagLayout = () => {
   const [billingAddressData, setBillingAddressData] = useState(initialState)
   const [hasBillingAddressData, setHasBillingAddressData] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
   const [alert, setAlert] = useState('')
   const location = useLocation()
   const navigate = useNavigate()
-  const { shoppingBagItems, setShoppingBagItems } = useContext(ShoppingBagContext)
+
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
   
   let shoppingBagItemsNumber = 0
   shoppingBagItems.forEach(item => shoppingBagItemsNumber += item.amount)

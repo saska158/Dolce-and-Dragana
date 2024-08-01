@@ -703,7 +703,7 @@ header {
   color: #757373;
 }
   
-/*NEEEEEEEESTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO*/
+/*ADITION*/
 
 .selected {
   font-weight: 700;
@@ -1109,41 +1109,6 @@ label {
     width: fit-content;
     align-self: stretch;
   }
-  /*
-  .shopping-bag-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 80px;
-  border-top: .5px solid #000;
-  background-color: #fff;
-  display: flex;
-  font-size: .6rem;
-}
-
-.terms-privacy {
-  margin-right: auto;
-  font-size: .3rem;
-  display: none;
-}
-
-.total-amount {
-  text-align: center;
-  font-weight: 700;
-  align-self: center;
-  width: 50%;
-}
-
-.shopping-bag-footer-button {
-  background-color: #000;
-  color: #fff;
-  padding: 1em 3em;
-  font-size: .7rem;
-  width: 50%;
-}
-  */
 
   /*__________POP-UPs__________*/
 
@@ -1280,24 +1245,3 @@ label {
 }
 
 
-/*NEEEEEEEESTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO*/
-/*
-.empty-shopping-bag {
-  width: 30%;
-  padding: 5em;
-  font-size: .8rem;
-}
-
-.empty-shopping-bag p {
-  padding-top: .5em;
-}
-
-.content-container {
-  margin-top: 9em;
-}
-
-.selected {
-  font-weight: 700;
-}
-
-*/

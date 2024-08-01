@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext, useRef, createRef } from "react"
 import { Link, useParams } from "react-router-dom"
-import { getItem } from "./api"
-import { ShoppingBagContext } from "./shoppingBagContext"
-import useScreenWidth from "./useScreenWidth"
+import { getItem } from "../utils/api"
+import { ShoppingBagContext } from "../contexts/shoppingBagContext"
+import useScreenWidth from "../utils/useScreenWidth"
 import gsap from "gsap"
 
 const ItemDetail = () => {
@@ -10,17 +10,16 @@ const ItemDetail = () => {
   const [item, setItem] = useState(null)
   const [selectedSize, setSelectedSize] = useState(null)
   const [mainImage, setMainImage] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(false)
   const [selectedItem, setSelectedItem] = useState(null)
   const [showSelectedItem, setShowSelectedItem] = useState(false)
-  const selectedItemRef = useRef(null)
   const [warning, setWarning] = useState(false)
-  const { id, category } = useParams()
-
+  const selectedItemRef = useRef(null)
   const imgRefs = useRef([])
-
+  const { id, category } = useParams()
   const { isSmallScreen } = useScreenWidth()
+
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     const loadItem = async () => {
@@ -40,7 +39,21 @@ const ItemDetail = () => {
     loadItem()
   }, [id, category])
 
+  useEffect(() => {
+    if(item && item.images) {
+      if (imgRefs.current.length !== item.images.length) {
+        imgRefs.current = Array(item.images.length).fill().map((_, i) => imgRefs.current[i] || createRef())
+      }
+    }
+  }, [item])
 
+  useEffect(() => {
+    if(showSelectedItem) {
+      gsap.to(selectedItemRef.current, {duration: 0.7, x: 0, ease: "power4.out"})
+    } else {
+      gsap.to(selectedItemRef.current, {duration: 0.7, x: '100%', ease: "power4.in"})
+    }
+  }, [showSelectedItem])
 
   const handleAddButton = (selectedSize) => {
     if(!selectedSize) {
@@ -57,24 +70,6 @@ const ItemDetail = () => {
     setShowSelectedItem(true)
     setTimeout(() => {setShowSelectedItem(false)}, 3000)
   }
-
-  
-
-  useEffect(() => {
-    if(item && item.images) {
-      if (imgRefs.current.length !== item.images.length) {
-        imgRefs.current = Array(item.images.length).fill().map((_, i) => imgRefs.current[i] || createRef())
-      }
-    }
-  }, [item])
-
-  useEffect(() => {
-    if(showSelectedItem) {
-      gsap.to(selectedItemRef.current, {duration: 0.7, x: 0, ease: "power4.out"})
-    } else {
-      gsap.to(selectedItemRef.current, {duration: 0.7, x: '100%', ease: "power4.in"})
-    }
-  }, [showSelectedItem])
 
   if(loading) {
     return (
@@ -109,29 +104,29 @@ const ItemDetail = () => {
   return (
     item ? (
       <>
-      <div className="content-container" style={showSelectedItem ? {opacity: '.3'} : null}>
-        <div className="item-detail">
-          <div className="item-detail-info item-detail-info-two">
-            <div>
-              <h4>COMPOSITION, CARE & ORIGIN</h4>
-              <p>
-                We work with monitoring programmes to ensure compliance with our social,
-                environmental and health and safety standards for our products. 
-                To assess compliance, we have developed a programme of 
-                audits and continuous improvement plans.
-              </p>
-            </div>
-          </div>
-          <div className="item-detail-images-container">
-          {
-            !isSmallScreen && (
-              <div classname="item-detail-main-img">
-                <img src={mainImage} alt="main-image"/>
+        <div className="content-container" style={showSelectedItem ? {opacity: '.3'} : null}>
+          <div className="item-detail">
+            <div className="item-detail-info item-detail-info-two">
+              <div>
+                <h4>COMPOSITION, CARE & ORIGIN</h4>
+                <p>
+                  We work with monitoring programmes to ensure compliance with our social,
+                  environmental and health and safety standards for our products. 
+                  To assess compliance, we have developed a programme of 
+                  audits and continuous improvement plans.
+                </p>
               </div>
-            )
-          }
-          <div className="item-detail-images">
-              {item.images && item.images.map((image, i) => <img
+            </div>
+            <div className="item-detail-images-container">
+              {
+                !isSmallScreen && (
+                  <div classname="item-detail-main-img">
+                    <img src={mainImage} alt="main-image"/>
+                  </div>
+                )
+              }
+              <div className="item-detail-images">
+                {item.images && item.images.map((image, i) => <img
                                                          key={image} 
                                                          src={image} 
                                                          alt="item"
@@ -140,41 +135,42 @@ const ItemDetail = () => {
                                                          onClick={() => setMainImage(image)}
                                                          style={image === mainImage ? {opacity: '1'} : null}
                                                         />)
-              }
-          </div>
-          </div>
-          <div className='item-detail-info'>
-            <div className="item-detail-basic">
-              <h4>{item.name}</h4>
-              <p>{item?.price?.toLocaleString()} RSD</p>
-              <p>*{item.color}</p>
+                }
+              </div>
             </div>
-            <div className="item-detail-description">
-              {item.description}
-            </div>
-            <div className="item-detail-sizes">
-              {item?.sizes?.map(size => <button 
+            <div className='item-detail-info'>
+              <div className="item-detail-basic">
+                <h4>{item.name}</h4>
+                <p>{item?.price?.toLocaleString()} RSD</p>
+                <p>*{item.color}</p>
+              </div>
+              <div className="item-detail-description">
+                {item.description}
+              </div>
+              <div className="item-detail-sizes">
+                {item?.sizes?.map(size => <button 
                                           key={size} 
                                           onClick={() => setSelectedSize(size)}
                                           className={selectedSize === size ? 'black-btn' : ''}>{size}</button>)
+                }
+              </div>
+              <button 
+                onClick={() => handleAddButton(selectedSize) }
+                className={`add-btn ${selectedSize ? 'black-btn' : ""}`}
+              >
+                ADD
+              </button>
+              { 
+                selectedItem && (
+                  <Link to='/shopping-bag'>PROCESS ORDER</Link>
+                ) 
               }
             </div>
-            <button 
-              onClick={() => handleAddButton(selectedSize) }
-              className={`add-btn ${selectedSize ? 'black-btn' : ""}`}
-            >
-              ADD
-            </button>
-            { selectedItem && (
-              <Link to='/shopping-bag'>PROCESS ORDER</Link>
-              ) 
-            }
           </div>
         </div>
-      </div>
-      {
-            selectedItem && (
-              <div className="selected-item-show" ref={selectedItemRef}> 
+        {
+          selectedItem && (
+            <div className="selected-item-show" ref={selectedItemRef}> 
               <button 
                 onClick={() => setShowSelectedItem(false)}
               >
@@ -188,9 +184,9 @@ const ItemDetail = () => {
                 <p>{selectedItem.name}</p>
               </div>
                 <Link to='/shopping-bag'>SEE SHOPPING BAG</Link>
-              </div>
-            )
-          }
+            </div>
+          )
+        }
       </>
     ) : null
   )

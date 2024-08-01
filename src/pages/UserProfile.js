@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react"
-import { useAuth } from "./authContext"
-import { getBillingAddress } from "./api"
+import { useAuth } from "../contexts/authContext"
+import { getBillingAddress } from "../utils/api"
 import { NavLink } from "react-router-dom"
 
 const UserProfile = () => {

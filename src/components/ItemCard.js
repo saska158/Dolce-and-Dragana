@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext, useRef } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { ShoppingBagContext } from "./shoppingBagContext"
-import { addFavoriteItem, removeFavoriteItem, getFavoriteItems } from "./api"
-import { useAuth } from "./authContext"
+import { ShoppingBagContext } from "../contexts/shoppingBagContext"
+import { addFavoriteItem, removeFavoriteItem, getFavoriteItems } from "../utils/api"
+import { useAuth } from "../contexts/authContext"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 import gsap from "gsap"
 
@@ -20,8 +20,8 @@ const ItemCard = ({
     removeFromShoppingBag, 
     setShoppingBagItems 
   } = useContext(ShoppingBagContext)
-  const [showSizeTable, setShowSizeTable] = useState(null)
   const [favorites, setFavorites] = useState([])
+  const [showSizeTable, setShowSizeTable] = useState(null)
   const location = useLocation()
   const navigate = useNavigate()
   const sizeTableRef = useRef(null) 
@@ -32,6 +32,14 @@ const ItemCard = ({
     return () => unsubscribe && unsubscribe()
     }
   }, [user])
+
+  useEffect(() => {
+    if(showSizeTable) {
+      gsap.to(sizeTableRef.current, {duration: 0.7, y: 0, ease: "power4.out"})
+    } else {
+      gsap.to(sizeTableRef.current, {duration: 0.7, y: '100%', ease: "power4.in"})
+    }
+  }, [showSizeTable])
 
   const isFavourite = (item) => {
     if(favorites?.length > 0) {
@@ -99,14 +107,6 @@ const ItemCard = ({
       }
     })
   }
-
-  useEffect(() => {
-    if(showSizeTable) {
-      gsap.to(sizeTableRef.current, {duration: 0.7, y: 0, ease: "power4.out"})
-    } else {
-      gsap.to(sizeTableRef.current, {duration: 0.7, y: '100%', ease: "power4.in"})
-    }
-  }, [showSizeTable])
 
   return ( 
     <div className="item-container">  

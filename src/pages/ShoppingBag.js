@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect, useRef } from "react"
 import { Link } from "react-router-dom"
-import { ShoppingBagContext } from "./shoppingBagContext"
-import ItemCard from "./ItemCard"
+import { ShoppingBagContext } from "../contexts/shoppingBagContext"
+import ItemCard from "../components/ItemCard"
 import gsap from "gsap"
 
 const ShoppingBag = () => {

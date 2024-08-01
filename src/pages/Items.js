@@ -1,36 +1,40 @@
 import { useState, useEffect, useRef } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
-import { fetchData } from "./api"
-import ItemCard from "./ItemCard"
+import { fetchData } from "../utils/api"
+import ItemCard from "../components/ItemCard"
 import gsap from "gsap"
 
 
 const Items = () => {
   const [data, setData] = useState([])
   const [sortedItems, setSortedItems] = useState(data)
-  const { category } = useParams()
-
-  const [ searchParams, setSearchParams ] = useSearchParams()
   const [showColorDropdown, setShowColorDropdown] = useState(false)
   const [showSizeDropdown, setShowSizeDropdown] = useState(false)
   const [showSortDropdown, setShowSortDropDown] = useState(false)
-
   const [display, setDisplay] = useState(5)
-
   const [selectedItem, setSelectedItem] = useState(null)
   const [showSelectedItem, setShowSelectedItem] = useState(false)
   const [isItemFavourited, setIsItemFavourited] = useState(false)
   const [showFavouritedBox, setShowFavouritedBox] = useState(false)
 
+  const { category } = useParams()
+  const [ searchParams, setSearchParams ] = useSearchParams()
+
   const itemsGridRef = useRef(null)
   const displayOptionsRef = useRef(null)
-
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(false)   
+  const selectedItemRef = useRef(null)  
  
   const colorFilter = searchParams.get('color')
   const sizeFilter = searchParams.get('size')
   const sortOrder = searchParams.get('sortOrder')
+
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false) 
+
+  const colors = data.map(item => item.color)
+  const uniqueColors = [...new Set(colors)]
+  const sizes = data.flatMap(item => item.sizes)
+  const uniqueSizes = [...new Set(sizes)]
 
 
  
@@ -65,8 +69,13 @@ const Items = () => {
     gsap.to(itemsGridRef.current, {duration: 0.9, delay: 0.3, y: 0, opacity: 1, ease: "power4.out" })
   }, [data])
 
-
-
+  useEffect(() => {
+    if(showSelectedItem) {
+      gsap.to(selectedItemRef.current, {duration: 0.7, x: 0, ease: "power4.out"})
+    } else {
+      gsap.to(selectedItemRef.current, {duration: 0.7, x: '100%', ease: "power4.in"})
+    }
+  }, [showSelectedItem])
     
   const handleFilterChange = (key, value) => {
     setSearchParams(prevParams => {
@@ -114,21 +123,6 @@ const Items = () => {
     setShowColorDropdown(false)
     setShowSizeDropdown(false)
   }
-
-  const selectedItemRef = useRef(null)
-
-  useEffect(() => {
-    if(showSelectedItem) {
-      gsap.to(selectedItemRef.current, {duration: 0.7, x: 0, ease: "power4.out"})
-    } else {
-      gsap.to(selectedItemRef.current, {duration: 0.7, x: '100%', ease: "power4.in"})
-    }
-  }, [showSelectedItem])
-
-  const colors = data.map(item => item.color)
-  const uniqueColors = [...new Set(colors)]
-  const sizes = data.flatMap(item => item.sizes)
-  const uniqueSizes = [...new Set(sizes)]
   
   const filteredItems = sortedItems.filter(item => {
     const matchesColor = colorFilter ? item.color === colorFilter : true
@@ -164,8 +158,8 @@ const Items = () => {
     )
   }
 
-    return (
-      <>
+  return (
+    <>
       <div className="content-container" style={showSelectedItem ? {opacity: '.3'} : null}>
         <div className="display-options" ref={displayOptionsRef}>
           <div className="filter-buttons">
@@ -261,46 +255,43 @@ const Items = () => {
 
         
       </div>
-     
-
-          {
-            selectedItem && (
-              <div className="selected-item-show" ref={selectedItemRef}> 
-              <button 
-                onClick={() => setShowSelectedItem(false)}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                </svg>
-              </button>
-              <p>SIZE {selectedItem.size} ADDED TO YOUR SHOPPING BAG</p>
-              <div>
-                <img src={selectedItem.images[0]} alt="selected-image" />
-                <p>{selectedItem.name}</p>
-              </div>
-                <Link to='/shopping-bag'>SEE SHOPPING BAG</Link>
-              </div>
-            )
-          }
-
-          {
-            showFavouritedBox ? 
-              <div className="favourited-item-show">
-                {
-                  isItemFavourited ? (
-                    <>
-                      <p>Saved</p>
-                      <Link to='/shopping-bag/user-favorites'>SEE LIST</Link>
-                    </>
-                  ) : (
-                    <p>The item has been removed from favourites.</p>
-                  )
-                }
-              </div> 
-            : null
-          }
-      </>
-    )
+      {
+        selectedItem && (
+          <div className="selected-item-show" ref={selectedItemRef}> 
+            <button 
+              onClick={() => setShowSelectedItem(false)}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <p>SIZE {selectedItem.size} ADDED TO YOUR SHOPPING BAG</p>
+            <div>
+              <img src={selectedItem.images[0]} alt="selected-image" />
+              <p>{selectedItem.name}</p>
+            </div>
+            <Link to='/shopping-bag'>SEE SHOPPING BAG</Link>
+          </div>
+        )
+      }
+      {
+        showFavouritedBox ? 
+          <div className="favourited-item-show">
+            {
+              isItemFavourited ? (
+                <>
+                  <p>Saved</p>
+                  <Link to='/shopping-bag/user-favorites'>SEE LIST</Link>
+                </>
+              ) : (
+                <p>The item has been removed from favourites.</p>
+              )
+            }
+          </div> 
+        : null
+      }
+    </>
+  )
 }
 
 export default Items

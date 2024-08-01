@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { auth } from "./api"
+import { auth } from "../utils/api"
 import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth"
 
 const Signup = () => {
