@@ -64,9 +64,11 @@ const Layout = () => {
             }
            </button>
            <div className={`menu-container ${!isSmallScreen && menuOpen ? 'menu-container-on' : ''}`}>
-             <Link to="/" className={`logo ${!isSmallScreen && menuOpen ? 'logo-on' : ''}`}>
-               {/*<img src={`${process.env.PUBLIC_URL}/assets/d&d_logo_black.png`} />*/}
-               DOLCE&DRAGANA
+             <Link to="/" className='logo'>
+              {
+                menuOpen ? <img src={`${process.env.PUBLIC_URL}/assets/logo/logo-black.svg`} alt="logo" /> :
+                <img src={`${process.env.PUBLIC_URL}/assets/logo/logo-green.svg`} alt="logo" /> 
+              } 
              </Link>
              <div className={`menu ${menuOpen ? 'menu-visible' : ''}`} ref={menuRef}>
                 {

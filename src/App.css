@@ -138,9 +138,10 @@ input {
 
 header {
   display: flex;
-  flex-direction: column;
+ /* flex-direction: column;
   justify-content: start;
-  align-items: flex-start;
+  align-items: flex-start;*/
+  align-items: center;
   flex-wrap: wrap;
   gap: 1em;
   position: fixed;
@@ -151,37 +152,22 @@ header {
 
 .menu-button {
   width: 35px;
-  margin-right: 2em;
+  margin-right: 1em;
 }
 
 .menu-button:hover {
   cursor: pointer;
 }
 
-.logo {
-  font-size: 1.8rem;
-  font-weight: 700;
-  justify-self: flex-start;
-  padding: 0 .4em;
-  letter-spacing: -2px;
-  font-family: 'Times New Roman', Times, serif;
-  color: #8ae019;
-}
-
-.logo-on {
-  color: #000;
-  font-size: 1.5rem;
-  font-weight: 400;
-}
-
 .menu-container {
-  display: flex;
+ /* display: flex;
   flex-direction: column;
   position: absolute;
-  top: 9%;
-  left: 15%;
+  top: 17%;
+  left: 15%;*/
+  width: 80%;
 }
-
+/*
 .menu-container-on {
   background-color: #fff;
   border: .5px solid #000;
@@ -194,7 +180,7 @@ header {
   height: 100%;
   z-index: 9999;
   padding-top: 3em;
-}
+}*/
 
 .menu {
   position: fixed;
@@ -979,7 +965,7 @@ label {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
   }
 
   .menu-button {
@@ -987,30 +973,27 @@ label {
     margin-right: 2em;
   }
 
-  .logo {
-    font-size: 6.5rem;
-    font-weight: 700;
-    letter-spacing: -9px;
-    transition: all .3s;
-  }
-
-  .logo-on {
-    color: #000;
-    font-size: 4.5rem;
-    font-weight: 700;
-  }
-
   .menu-container {
+    display: flex;
+    flex-direction: column;
     position: absolute;
-    top: 0;
+    top: 15%;
     left: 5%;
     transition: all .3s;
+    width: 60%;
   }
 
   .menu-container-on {
-    width: fit-content;
+    background-color: #fff;
+    border: .5px solid #000;
+    width: 40%;
     height: fit-content;
-    padding-top: 0;
+    z-index: 9999;
+    padding-top: 1em;
+  }
+
+  .logo {
+    margin: 0 2em;
   }
 
   .menu {
@@ -1024,6 +1007,7 @@ label {
 
   .menu-visible {
     display: block;
+    margin-top: 1em;
   }
   
   .menu-list {

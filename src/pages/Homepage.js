@@ -3,6 +3,7 @@ import gsap from "gsap"
 
 const Homepage = () => {
     const videoUrls = [
+        'homepage_video_2.mp4',
         'homepage_video_5.mp4',
         'homepage_video_9.mp4',
         'homepage_video_11.mp4',
