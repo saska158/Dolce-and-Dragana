@@ -18,7 +18,6 @@ const Homepage = () => {
     }
 
     function handleNext() {
-      console.log('next', videoRefs.current)
       if (index < videoUrls.length - 1) {
         setIndex(index + 1)
         gsap.to(videoRefs.current[index + 1].current, {duration: 1, x: 0, ease: "power4.out"})

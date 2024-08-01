@@ -12,6 +12,7 @@ const UserFavorites = () => {
     const [showFavouritedBox, setShowFavouritedBox] = useState(false)
     const [selectedItem, setSelectedItem] = useState(null)
     const selectedItemRef = useRef(null)
+    const itemsGridRef = useRef(null)
     const [showSelectedItem, setShowSelectedItem] = useState(false)
 
     useEffect(() => {
@@ -27,13 +28,18 @@ const UserFavorites = () => {
       }
     }, [showSelectedItem])
 
+    useEffect(() => {
+      gsap.to(itemsGridRef.current, {duration: 0.9, delay: 0.3, y: 0, opacity: 1, ease: "power4.out" })
+    }, [favorites])
+    
+
     return (
       <>
       <div style={showSelectedItem ? {opacity: '.3'} : null}>
-        <p style={{fontWeight: '700'}}>{user.displayName}'s...</p><br />
+      <p style={{fontSize: '.7rem', padding: '1em'}}>{user.displayName}'s...</p>
         {
           favorites?.length > 0 ? (
-            <div className="clothes-grid">
+            <div className="clothes-grid" ref={itemsGridRef}>
               {favorites.map(fav => <ItemCard 
                                       key={fav.name} 
                                       item={fav} 
@@ -45,7 +51,14 @@ const UserFavorites = () => {
                                     />
               )}
             </div>
-          ) : 'YOU DO NOT HAVE ANY SAVED ITEMS'
+          ) : (
+            <div className="empty">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="item-icon">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+              </svg>
+              <p>YOU DO NOT HAVE ANY SAVED ITEMS</p>
+            </div>
+          )
         }
       </div>
       {/*{showSelectedItem ? (
@@ -103,3 +116,4 @@ const UserFavorites = () => {
 }
 
 export default UserFavorites
+

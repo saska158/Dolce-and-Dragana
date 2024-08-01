@@ -1,8 +1,9 @@
-import { useState, useContext, useEffect } from "react"
+import { useState, useContext, useEffect, useRef } from "react"
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom"
 import { ShoppingBagContext } from "./shoppingBagContext"
 import { useAuth } from "./authContext"
 import useScreenWidth from "./useScreenWidth"
+import gsap from "gsap"
 
 const Layout = () => {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -11,6 +12,7 @@ const Layout = () => {
   const { shoppingBagItems } = useContext(ShoppingBagContext)
   const { user, logOut } = useAuth()
   const { isSmallScreen } = useScreenWidth()
+  const menuRef = useRef(null)
 
   let shoppingBagItemsNumber = 0
   
@@ -28,6 +30,16 @@ const Layout = () => {
     fontWeight: '700',
     color: '#000'
   }
+
+  useEffect(() => {
+    if(isSmallScreen) {
+      if(menuOpen) {
+        gsap.to(menuRef.current, {duration: 0.5, x: 0, ease: "power1.in"})
+      } else {
+        gsap.to(menuRef.current, {duration: 0.5, x: '-100%', ease: "power4.in"})
+      }
+    }
+  }, [menuOpen, isSmallScreen])
 
     return (
       <div className="container">
@@ -51,21 +63,21 @@ const Layout = () => {
               )
             }
            </button>
-           <div className={`menu-container ${menuOpen ? 'menu-container-on' : ''}`}>
-             <Link to="/" className="logo">
+           <div className={`menu-container ${!isSmallScreen && menuOpen ? 'menu-container-on' : ''}`}>
+             <Link to="/" className={`logo ${!isSmallScreen && menuOpen ? 'logo-on' : ''}`}>
                {/*<img src={`${process.env.PUBLIC_URL}/assets/d&d_logo_black.png`} />*/}
                DOLCE&DRAGANA
              </Link>
-             {
-              menuOpen && isSmallScreen ? (
-                <button onClick={toggleMenu} className="menu-button" style={{position: 'fixed', top: '2%', left: '2%'}}>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="menu-toggle">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              ) : null
-             }
-             <div className={`menu ${menuOpen ? 'menu-visible' : ''}`}>
+             <div className={`menu ${menuOpen ? 'menu-visible' : ''}`} ref={menuRef}>
+                {
+                  isSmallScreen && (
+                    <button onClick={toggleMenu} className="menu-button" style={{position: 'fixed', top: '2%', left: '2%', zIndex: '9999'}}>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="menu-toggle">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  )
+                }
                 <ul className="menu-nav">
                   <li 
                     onClick={() => {setMenuCategory('women')}}
@@ -87,11 +99,6 @@ const Layout = () => {
                        to='/women-jackets'
                        onClick={() => setMenuOpen(false)}
                        style={({isActive}) => isActive ? linkActiveStyle : null}>Jackets</NavLink>
-                      <NavLink 
-                       className="menu-link" 
-                       to='/women-sweaters'
-                       onClick={() => setMenuOpen(false)}
-                       style={({isActive}) => isActive ? linkActiveStyle : null}>Sweaters</NavLink>
                       <NavLink 
                        className="menu-link" 
                        to='/women-coats'

@@ -1,8 +1,10 @@
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect, useContext, useRef } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { ShoppingBagContext } from "./shoppingBagContext"
 import { addFavoriteItem, removeFavoriteItem, getFavoriteItems } from "./api"
 import { useAuth } from "./authContext"
+import { LazyLoadImage } from "react-lazy-load-image-component"
+import gsap from "gsap"
 
 const ItemCard = ({
                     category, 
@@ -22,6 +24,7 @@ const ItemCard = ({
   const [favorites, setFavorites] = useState([])
   const location = useLocation()
   const navigate = useNavigate()
+  const sizeTableRef = useRef(null) 
 
   useEffect(() => {
     if(user) {
@@ -97,11 +100,19 @@ const ItemCard = ({
     })
   }
 
+  useEffect(() => {
+    if(showSizeTable) {
+      gsap.to(sizeTableRef.current, {duration: 0.7, y: 0, ease: "power4.out"})
+    } else {
+      gsap.to(sizeTableRef.current, {duration: 0.7, y: '100%', ease: "power4.in"})
+    }
+  }, [showSizeTable])
+
   return ( 
     <div className="item-container">  
       <Link to={`/${category}/${item.id}`} key={item.id} className='item-link'>
         <div className='item'>
-          <img className='item-img' src={item.mainImageUrl} alt="item-image" />
+          <LazyLoadImage className='item-img' src={item.mainImageUrl} alt="item-image" />
             {
               location.pathname !== '/shopping-bag' && location.pathname !== '/user-favorites' ? (
                 <>
@@ -111,7 +122,7 @@ const ItemCard = ({
                   {
                     showSizeTable === item.id && (
                       <div onClick={(e) => e.preventDefault()}>
-                        <div className="size-table">
+                        <div className="size-table" ref={sizeTableRef}>
                           {item.sizes.map(size => <div 
                                                     key={size} 
                                                     onClick={() => {

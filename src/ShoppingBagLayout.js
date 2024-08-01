@@ -30,6 +30,13 @@ const ShoppingBagLayout = () => {
   let totalAmount = 0
   shoppingBagItems.forEach(item => totalAmount += item.price * item.amount)
 
+  const navLinkStyle = {
+    fontWeight: '400',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '.5em'
+  }
+
   const navLinkActiveStyle = {
     fontWeight: '700',
     color: '#000'
@@ -127,18 +134,26 @@ const ShoppingBagLayout = () => {
           <div className="shopping-bag-nav">
             <NavLink 
               to='/shopping-bag' 
-              style={({isActive}) => isActive ? navLinkActiveStyle : null}
+              style={({isActive}) => {
+                if(location.pathname === "/shopping-bag/user-favorites") {
+                  return {...navLinkStyle}
+                } else if(isActive) {
+                  return {...navLinkStyle, ...navLinkActiveStyle}
+                } else {
+                  return {...navLinkStyle}
+                }
+              }}
             >
               {`SHOPPING BAG (${shoppingBagItemsNumber})`}
             </NavLink>
             <NavLink 
               to='/shopping-bag/user-favorites' 
               style={({isActive}) => isActive ? 
-                                  {display: 'flex', alignItems: 'center', gap: '.5em', ...navLinkActiveStyle} 
-                                  : {display: 'flex', alignItems: 'center', gap: '.5em'}}
+                                  {...navLinkStyle, ...navLinkActiveStyle} 
+                                  : navLinkStyle}
             >
               <span>FAVOURITES</span> 
-              <svg style={{width: '5px'}} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <svg style={{width: '10px'}} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
               </svg>
             </NavLink>

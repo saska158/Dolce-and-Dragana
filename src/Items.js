@@ -22,6 +22,9 @@ const Items = () => {
   const [isItemFavourited, setIsItemFavourited] = useState(false)
   const [showFavouritedBox, setShowFavouritedBox] = useState(false)
 
+  const itemsGridRef = useRef(null)
+  const displayOptionsRef = useRef(null)
+
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)   
  
@@ -56,6 +59,13 @@ const Items = () => {
     }
     setSortedItems(sortedData);
   }, [sortOrder, data])
+
+  useEffect(() => {
+    gsap.to(displayOptionsRef.current, {duration: 0.7, y: 0, opacity: 1, ease: "power4.out" })
+    gsap.to(itemsGridRef.current, {duration: 0.9, delay: 0.3, y: 0, opacity: 1, ease: "power4.out" })
+  }, [data])
+
+
 
     
   const handleFilterChange = (key, value) => {
@@ -157,7 +167,7 @@ const Items = () => {
     return (
       <>
       <div className="content-container" style={showSelectedItem ? {opacity: '.3'} : null}>
-        <div className="display-options">
+        <div className="display-options" ref={displayOptionsRef}>
           <div className="filter-buttons">
             <button
               className={colorFilter === '' ? 'selected' : ''}
@@ -242,6 +252,7 @@ const Items = () => {
         
         <div 
           className={display === 5 ? "clothes-grid" : "clothes-grid-two-items"}
+          ref={itemsGridRef}
         >
           {
             itemsElements ? itemsElements : <p>No item matches your requirements.</p>

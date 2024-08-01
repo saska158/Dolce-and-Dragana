@@ -7,24 +7,18 @@ import gsap from "gsap"
 
 const ItemDetail = () => {
   const { addToShoppingBag } = useContext(ShoppingBagContext)
-  const [item, setItem] = useState({})
+  const [item, setItem] = useState(null)
   const [selectedSize, setSelectedSize] = useState(null)
+  const [mainImage, setMainImage] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const [selectedItem, setSelectedItem] = useState(null)
   const [showSelectedItem, setShowSelectedItem] = useState(false)
   const selectedItemRef = useRef(null)
   const [warning, setWarning] = useState(false)
-  const [currentSlide, setCurrentSlide] = useState(0)
   const { id, category } = useParams()
 
-  const [infoHeight, setInfoHeight] = useState('28%')
-  const [isDragging, setIsDragging] = useState(false)
-  const startYRef = useRef(0)
-  const startHeightRef = useRef(0)
-  const infoRef = useRef(null)
   const imgRefs = useRef([])
-  const [index, setIndex] = useState(0)
 
   const { isSmallScreen } = useScreenWidth()
 
@@ -35,6 +29,7 @@ const ItemDetail = () => {
         const itemData = await getItem(category, id)
         setLoading(true)
         setItem(itemData)
+        setMainImage(itemData.images[0])
       } catch(error) {
           console.error(error)
           setError(error)
@@ -45,42 +40,6 @@ const ItemDetail = () => {
     loadItem()
   }, [id, category])
 
-  useEffect(() => {
-    if (isDragging) {
-      document.body.classList.add('no-scroll')
-    } else {
-      document.body.classList.remove('no-scroll')
-    }
-
-    return () => {
-      document.body.classList.remove('no-scroll')
-    }
-  }, [isDragging])
-
-
-  const handleTouchStart = (e) => {
-    setIsDragging(true)
-    startYRef.current = e.touches[0].clientY
-    startHeightRef.current = infoRef.current.offsetHeight
-  }
-
-  const handleTouchMove = (e) => {
-    if (isDragging) {
-      const touchY = e.touches[0].clientY
-      let newHeight = startHeightRef.current - (touchY - startYRef.current)
-
-      const minHeight = window.innerHeight * 0.28
-      if (newHeight < minHeight) {
-        newHeight = minHeight
-      }
-
-      setInfoHeight(`${newHeight}px`)
-    }
-  }
-
-  const handleTouchEnd = () => {
-    setIsDragging(false)
-  }
 
 
   const handleAddButton = (selectedSize) => {
@@ -108,23 +67,6 @@ const ItemDetail = () => {
       }
     }
   }, [item])
-
-
-  function handleNext() {
-    if (index < item.images.length - 1) {
-      setIndex(index + 1)
-      gsap.to(imgRefs.current[index + 1].current, {duration: 1, x: 0, ease: "power4.out"})
-    }
-    setCurrentSlide((prevSlide) => (prevSlide === item.images.length - 1 ? 0 : prevSlide + 1))
-  }
-
-  function handlePrev() {
-    if (index > 0) {
-      setIndex(index - 1)
-      gsap.to(imgRefs.current[index].current, {duration: 0.6, x: '-100%', ease: "power4.in"})
-    }
-    setCurrentSlide((prevSlide) => (prevSlide === 0 ? item.images.length - 1 : prevSlide - 1))
-  }
 
   useEffect(() => {
     if(showSelectedItem) {
@@ -180,42 +122,28 @@ const ItemDetail = () => {
               </p>
             </div>
           </div>
+          <div className="item-detail-images-container">
+          {
+            !isSmallScreen && (
+              <div classname="item-detail-main-img">
+                <img src={mainImage} alt="main-image"/>
+              </div>
+            )
+          }
           <div className="item-detail-images">
-              {item.images && item.images.map((image, i) => <img 
+              {item.images && item.images.map((image, i) => <img
                                                          key={image} 
                                                          src={image} 
                                                          alt="item"
-                                                         className={`item-detail-img ${i === 0 ? 'item-detail-img-first' : ''}`}
+                                                         className='item-detail-img'
                                                          ref={imgRefs.current[i]}
+                                                         onClick={() => setMainImage(image)}
+                                                         style={image === mainImage ? {opacity: '1'} : null}
                                                         />)
               }
-              { !isSmallScreen && (
-                <>
-                  {currentSlide !== 0 && (
-                    <button className="prev prev-small" onClick={handlePrev}>
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                      </svg>
-                    </button>
-                  )}
-                  {item.images && currentSlide !== item.images.length - 1 && (
-                    <button className="next next-small" onClick={handleNext}>
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                      </svg>
-                    </button>
-                  )}
-                </>
-              )}
           </div>
-          <div 
-            className={`item-detail-info ${isDragging ? 'dragging' : ''}`}
-            ref={ isSmallScreen ? infoRef : null}
-            style={ isSmallScreen ? { height: infoHeight } : null}
-            onTouchStart={ isSmallScreen ? handleTouchStart : null}
-            onTouchMove={isSmallScreen ? handleTouchMove : null}
-            onTouchEnd={isSmallScreen ? handleTouchEnd : null}
-          >
+          </div>
+          <div className='item-detail-info'>
             <div className="item-detail-basic">
               <h4>{item.name}</h4>
               <p>{item?.price?.toLocaleString()} RSD</p>
@@ -226,10 +154,10 @@ const ItemDetail = () => {
               Front slit at the hem. Lining. Invisible side zip fastening.
             </div>
             <div className="item-detail-sizes">
-              {item?.sizes?.map(size => <div 
+              {item?.sizes?.map(size => <button 
                                           key={size} 
                                           onClick={() => setSelectedSize(size)}
-                                          className={selectedSize === size ? 'black-btn' : ''}>{size}</div>)
+                                          className={selectedSize === size ? 'black-btn' : ''}>{size}</button>)
               }
             </div>
             <button 
