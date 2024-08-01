@@ -147,7 +147,6 @@ header {
   width: 100%;
   z-index: 9;
   padding: 1em;
-  /*position: relative;*/
 }
 
 .menu-button {
@@ -342,11 +341,12 @@ header {
   font-size: .7rem;
   color: #494949;
   position: relative;
+  
 }
   
 .item-link {
   position: relative;
-  min-height: 80%;
+  min-height: 70%;
 }
   
 .item {
@@ -445,7 +445,7 @@ header {
   width: 100%;
   font-size: .5rem;
   font-weight: 300;
-  /*margin-bottom: 3.5em;*/
+  margin-bottom: 1em;
 }
 
 .shopping-bag-nav a {
@@ -456,6 +456,7 @@ header {
   border-top: .3px solid #000;
   border-right: .3px solid #000;
   color: #494949;
+  width: 50%;
 }
 
 .shopping-bag-nav a:last-child {
@@ -935,7 +936,7 @@ label {
 
 @media (min-width: 768px) {
   .content-container {
-    margin-top: 9em;
+    margin-top: 10.5em;
   }
   
   .homepage-video {
@@ -1066,6 +1067,7 @@ label {
 
   .shopping-bag-nav a {
     padding: .7em 12em;
+    width: auto;
   }
 
   .shopping-bag-footer {
