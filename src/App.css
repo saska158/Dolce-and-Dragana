@@ -729,7 +729,7 @@ header {
   display: flex;
   flex-direction: column;
   gap: 3em;
-  font-weight: 200;
+  font-weight: 400;
   color: #494949;
 }
 
@@ -739,7 +739,7 @@ header {
 
 .form-container h4 {
   font-size: .95rem;
-  font-weight: 200;
+  font-weight: 400;
 }
 
 .form-container a,
@@ -762,7 +762,7 @@ header {
 .form button,
 .form-container a {
   padding: 1em 0;
-  font-weight: 200;
+  font-weight: 400;
   color: #494949;
 } 
 
@@ -781,7 +781,7 @@ header {
   border-bottom: .5px solid #cccaca;
   color: #000;
   font-size: .9rem;
-  font-weight: 200;
+  font-weight: 400;
   letter-spacing: 1px;
   transition: border-color 0.3s;
   margin-top: 2em;

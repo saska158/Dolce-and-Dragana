@@ -69,7 +69,7 @@ const ItemCard = ({
 
   const toggleFavouritedBox = () => {
     setShowFavouritedBox(true)
-    setTimeout(() => {setShowFavouritedBox(false)}, 1000)
+    setTimeout(() => {setShowFavouritedBox(false)}, 3000)
   }
 
   const increaseAmount = (shoppingBagId) => {

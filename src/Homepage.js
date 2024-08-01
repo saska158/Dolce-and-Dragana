@@ -3,10 +3,10 @@ import gsap from "gsap"
 
 const Homepage = () => {
     const videoUrls = [
+        'homepage_video_5.mp4',
         'homepage_video_9.mp4',
         'homepage_video_11.mp4',
-        'homepage_video_8.mp4',
-        'homepage_video_5.mp4'
+        'homepage_video_8.mp4'
     ]
 
     const videoRefs = useRef([])
