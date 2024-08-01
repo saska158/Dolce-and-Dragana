@@ -769,7 +769,6 @@ header {
 .form-container button:hover,
 .form-container a:hover {
   color: #cccaca;
-  border: 1px solid #cccaca;
 }
 
 .form-container a {
