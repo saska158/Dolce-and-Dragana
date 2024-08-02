@@ -317,7 +317,7 @@ header {
   
 .item-link {
   position: relative;
-  min-height: 70%;
+  height: 80%;
 }
   
 .item {

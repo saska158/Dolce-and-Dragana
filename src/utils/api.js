@@ -28,6 +28,7 @@ export { auth }
 
 const routeToCollectionMap = {
   '/women-jackets': 'women-jackets',
+  '/women-sweaters': 'women-sweaters',
   '/women-blouses': 'women-blouses',
   '/women-coats': 'women-coats',
   '/men-jackets': 'men-jackets',

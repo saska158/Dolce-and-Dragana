@@ -93,11 +93,6 @@ const Layout = () => {
                     <div className="menu-list">
                       <NavLink 
                        className="menu-link" 
-                       to='/women-blouses'
-                       onClick={() => setMenuOpen(false)}
-                       style={({isActive}) => isActive ? linkActiveStyle : null}>Blouses</NavLink>
-                      <NavLink 
-                       className="menu-link" 
                        to='/women-jackets'
                        onClick={() => setMenuOpen(false)}
                        style={({isActive}) => isActive ? linkActiveStyle : null}>Jackets</NavLink>
@@ -106,6 +101,16 @@ const Layout = () => {
                        to='/women-coats'
                        onClick={() => setMenuOpen(false)}
                        style={({isActive}) => isActive ? linkActiveStyle : null}>Coats</NavLink>
+                       <NavLink 
+                       className="menu-link" 
+                       to='/women-sweaters'
+                       onClick={() => setMenuOpen(false)}
+                       style={({isActive}) => isActive ? linkActiveStyle : null}>Sweaters</NavLink>
+                      <NavLink 
+                       className="menu-link" 
+                       to='/women-blouses'
+                       onClick={() => setMenuOpen(false)}
+                       style={({isActive}) => isActive ? linkActiveStyle : null}>Blouses</NavLink>
                     </div>
                   )
                 }
